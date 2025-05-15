@@ -10,12 +10,17 @@ namespace Programming
         private Model.Classes.Rectangle[] _rectangles;
         private Model.Classes.Rectangle _currentRectangle;
 
+        private Model.Classes.Film[] _films;
+        private Model.Classes.Film _currentFilm;
+
         public MainForm()
         {
             InitializeComponent();
             this.Load += new EventHandler(MainForm_Load);
 
             _rectangles = new Model.Classes.Rectangle[5];
+            _films = new Model.Classes.Film[3];
+
             Random random = new Random();
             for (int i = 0; i < _rectangles.Length; i++)
             {
@@ -26,14 +31,22 @@ namespace Programming
                 _rectangles[i] = new Model.Classes.Rectangle(length, width, randomColor.ToString());
             }
 
-            // Добавление элементов в ListBox
+            _films[0] = new Model.Classes.Film("Дерево жизни", 138, 2011, "Драма, филосовская притча", 7.3);
+            _films[1] = new Model.Classes.Film("Поездка в Америку", 117, 1988, "Комедия", 6.7);
+            _films[2] = new Model.Classes.Film("Остров проклятых", 138, 2010, "Триллер, детектив", 8.1);
+
             for (int i = 0; i < _rectangles.Length; i++)
             {
                 RectanglesListBox.Items.Add($"Rectangle {i + 1}");
             }
 
-            // Установка текущего прямоугольника
+            for (int i = 0; i < _films.Length; i++)
+            {
+                FilmsListBox.Items.Add($"FIlm {i + 1}");
+            }
+
             _currentRectangle = _rectangles[0];
+            _currentFilm = _films[0];
         }
 
         private void MainForm_Load(object? sender, EventArgs e)
@@ -179,7 +192,7 @@ namespace Programming
                 if (newWidth < 0 || newWidth == 0)
                     throw new ArgumentOutOfRangeException("Значение должно быть больше или не равно нулю");
                 _currentRectangle.Width = newWidth;
-                RectangleWidthTextBox.BackColor = System.Drawing.Color.White; // Возвращаем нормальный белый фон
+                RectangleWidthTextBox.BackColor = System.Drawing.Color.White;
             }
             catch (ArgumentOutOfRangeException)
             {
@@ -189,6 +202,20 @@ namespace Programming
             {
                 RectangleWidthTextBox.BackColor = System.Drawing.Color.LightPink;
             }
+        }
+
+        private void RectangleColor_TextChange(object sender, EventArgs e)
+        {
+            string newColor = RectangleColorTextBox.Text.Trim();
+
+            if (string.IsNullOrWhiteSpace(newColor))
+            {
+                RectangleColorTextBox.BackColor = System.Drawing.Color.LightPink;
+                return;
+            }
+
+            _currentRectangle.Color = newColor;
+            RectangleColorTextBox.BackColor = System.Drawing.Color.White;
         }
 
         private int FindRectangleWithMaxWidth(Model.Classes.Rectangle[] rectangles)
@@ -215,5 +242,133 @@ namespace Programming
         {
             RectanglesListBox.SelectedIndex = FindRectangleWithMaxWidth(_rectangles);
         }
+
+        private void FilmsListBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (FilmsListBox.SelectedItem != null)
+            {
+                _currentFilm = _films[FilmsListBox.SelectedIndex];
+
+                FilmTitleTextBox.Text = _currentFilm.Title;
+                FilmDurationTextBox.Text = _currentFilm.DurationInMinutes.ToString();
+                FilmReleaseYearTextBox.Text = _currentFilm.ReleaseYear.ToString();
+                FilmGenreTextBox.Text = _currentFilm.Genre;
+                FilmRatingTextBox.Text = _currentFilm.Rating.ToString("F1");
+            }
+
+        }
+
+        private void FilmDurationInMinutes_TextChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                var newParseValue = int.Parse(FilmDurationTextBox.Text.Trim());
+                if (newParseValue < 1)
+                    throw new ArgumentOutOfRangeException("Значение должно быть больше или не равно нулю");
+                _currentFilm.DurationInMinutes = newParseValue;
+                FilmDurationTextBox.BackColor = System.Drawing.Color.White;
+            }
+            catch (ArgumentOutOfRangeException)
+            {
+                FilmDurationTextBox.BackColor = System.Drawing.Color.LightPink;
+            }
+            catch (Exception)
+            {
+                FilmDurationTextBox.BackColor = System.Drawing.Color.LightPink;
+            }
+        }
+
+        private void FilmReleaseYear_TextChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                var newParseValue = int.Parse(FilmReleaseYearTextBox.Text.Trim());
+                if (newParseValue < 1900 || newParseValue > DateTime.Now.Year)
+                    throw new ArgumentOutOfRangeException("Год релиза не может быть меньше 1900 или больше настоящего времени");
+                _currentFilm.ReleaseYear = newParseValue;
+                FilmReleaseYearTextBox.BackColor = System.Drawing.Color.White;
+            }
+            catch (ArgumentOutOfRangeException)
+            {
+                FilmReleaseYearTextBox.BackColor = System.Drawing.Color.LightPink;
+            }
+            catch (Exception)
+            {
+                FilmReleaseYearTextBox.BackColor = System.Drawing.Color.LightPink;
+            }
+        }
+
+        private void FilmRating_TextChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                var newParseValue = double.Parse(FilmRatingTextBox.Text.Trim());
+                if (newParseValue < 0 || newParseValue > 10)
+                    throw new ArgumentOutOfRangeException("Рейтинг не может быть меньше 0 или больше 10");
+                _currentFilm.Rating = newParseValue;
+                FilmRatingTextBox.BackColor = System.Drawing.Color.White;
+            }
+            catch (ArgumentOutOfRangeException)
+            {
+                FilmRatingTextBox.BackColor = System.Drawing.Color.LightPink;
+            }
+            catch (Exception)
+            {
+                FilmRatingTextBox.BackColor = System.Drawing.Color.LightPink;
+            }
+        }
+
+        private void FilmTitle_TextChange(object sender, EventArgs e)
+        {
+            string newTitle = FilmTitleTextBox.Text.Trim();
+
+            if (string.IsNullOrWhiteSpace(newTitle))
+            {
+                FilmTitleTextBox.BackColor = System.Drawing.Color.LightPink;
+                return;
+            }
+
+            _currentFilm.Title = newTitle;
+            FilmTitleTextBox.BackColor = System.Drawing.Color.White;
+        }
+
+        private void FilmGenre_TextChange(object sender, EventArgs e)
+        {
+            string newGenre = FilmGenreTextBox.Text.Trim();
+
+            if (string.IsNullOrWhiteSpace(newGenre))
+            {
+                FilmGenreTextBox.BackColor = System.Drawing.Color.LightPink;
+                return;
+            }
+
+            _currentFilm.Genre = newGenre;
+            FilmGenreTextBox.BackColor = System.Drawing.Color.White;
+        }
+
+        private int FindFilmWithMaxRating(Model.Classes.Film[] films)
+        {
+            if (films == null || films.Length == 0)
+                throw new ArgumentException("Массив фильмов пустой или не существует");
+
+            int maxIndex = 0;
+            double maxRating = films[0].Rating;
+
+            for (int i = 1; i < films.Length; i++)
+            {
+                if (films[i].Rating > maxRating)
+                {
+                    maxRating = films[i].Rating;
+                    maxIndex = i;
+                }
+            }
+
+            return maxIndex;
+        }
+
+        private void FilmFindButton_Click(object sender, MouseEventArgs e)
+        {
+            FilmsListBox.SelectedIndex = FindFilmWithMaxRating(_films);
+        } 
     }
 }
