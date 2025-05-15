@@ -28,8 +28,11 @@ partial class MainForm
     /// </summary>
     private void InitializeComponent()
     {
-        tabControl1 = new TabControl();
+        TabControl1 = new TabControl();
         tabPage1 = new TabPage();
+        ValueListLabel = new Label();
+        EnumListLabel = new Label();
+        IntValueBox = new Label();
         SeasonGroup = new GroupBox();
         SeasonButton = new Button();
         SeasonComboBox = new ComboBox();
@@ -42,24 +45,34 @@ partial class MainForm
         ValueTextBox = new TextBox();
         ValuesListBox = new ListBox();
         EnumsListBox = new ListBox();
-        IntValueBox = new Label();
-        EnumListLabel = new Label();
-        ValueListLabel = new Label();
-        tabControl1.SuspendLayout();
+        tabPage2 = new TabPage();
+        RectanglesGroupBox = new GroupBox();
+        RectangleFindButton = new Button();
+        RectangleColorTextBox = new TextBox();
+        RectangleColorLabel = new Label();
+        RectangleWidthTextBox = new TextBox();
+        RectangleWidthLabel = new Label();
+        RectangleLenghtLabel = new Label();
+        RectangleLenghtTextBox = new TextBox();
+        RectanglesListBox = new ListBox();
+        TabControl1.SuspendLayout();
         tabPage1.SuspendLayout();
         SeasonGroup.SuspendLayout();
         groupBox1.SuspendLayout();
+        tabPage2.SuspendLayout();
+        RectanglesGroupBox.SuspendLayout();
         SuspendLayout();
         // 
-        // tabControl1
+        // TabControl1
         // 
-        tabControl1.Controls.Add(tabPage1);
-        tabControl1.Dock = DockStyle.Fill;
-        tabControl1.Location = new Point(0, 0);
-        tabControl1.Name = "tabControl1";
-        tabControl1.SelectedIndex = 0;
-        tabControl1.Size = new Size(800, 450);
-        tabControl1.TabIndex = 0;
+        TabControl1.Controls.Add(tabPage1);
+        TabControl1.Controls.Add(tabPage2);
+        TabControl1.Dock = DockStyle.Fill;
+        TabControl1.Location = new Point(0, 0);
+        TabControl1.Name = "TabControl1";
+        TabControl1.SelectedIndex = 0;
+        TabControl1.Size = new Size(800, 450);
+        TabControl1.TabIndex = 0;
         // 
         // tabPage1
         // 
@@ -78,6 +91,33 @@ partial class MainForm
         tabPage1.TabIndex = 0;
         tabPage1.Text = "Enums";
         tabPage1.UseVisualStyleBackColor = true;
+        // 
+        // ValueListLabel
+        // 
+        ValueListLabel.AutoSize = true;
+        ValueListLabel.Location = new Point(192, 11);
+        ValueListLabel.Name = "ValueListLabel";
+        ValueListLabel.Size = new Size(81, 15);
+        ValueListLabel.TabIndex = 7;
+        ValueListLabel.Text = "Choose Value:";
+        // 
+        // EnumListLabel
+        // 
+        EnumListLabel.AutoSize = true;
+        EnumListLabel.Location = new Point(8, 11);
+        EnumListLabel.Name = "EnumListLabel";
+        EnumListLabel.Size = new Size(121, 15);
+        EnumListLabel.TabIndex = 6;
+        EnumListLabel.Text = "Choose enumeration:";
+        // 
+        // IntValueBox
+        // 
+        IntValueBox.AutoSize = true;
+        IntValueBox.Location = new Point(437, 138);
+        IntValueBox.Name = "IntValueBox";
+        IntValueBox.Size = new Size(55, 15);
+        IntValueBox.TabIndex = 5;
+        IntValueBox.Text = "Int value:";
         // 
         // SeasonGroup
         // 
@@ -195,54 +235,128 @@ partial class MainForm
         EnumsListBox.TabIndex = 0;
         EnumsListBox.SelectedIndexChanged += EnumsListBox_SelectedIndexChanged;
         // 
-        // IntValueBox
+        // tabPage2
         // 
-        IntValueBox.AutoSize = true;
-        IntValueBox.Location = new Point(437, 138);
-        IntValueBox.Name = "IntValueBox";
-        IntValueBox.Size = new Size(55, 15);
-        IntValueBox.TabIndex = 5;
-        IntValueBox.Text = "Int value:";
+        tabPage2.Controls.Add(RectanglesGroupBox);
+        tabPage2.Location = new Point(4, 24);
+        tabPage2.Name = "tabPage2";
+        tabPage2.Padding = new Padding(3);
+        tabPage2.Size = new Size(792, 422);
+        tabPage2.TabIndex = 1;
+        tabPage2.Text = "Classes";
+        tabPage2.UseVisualStyleBackColor = true;
         // 
-        // EnumListLabel
+        // RectanglesGroupBox
         // 
-        EnumListLabel.AutoSize = true;
-        EnumListLabel.Location = new Point(8, 11);
-        EnumListLabel.Name = "EnumListLabel";
-        EnumListLabel.Size = new Size(121, 15);
-        EnumListLabel.TabIndex = 6;
-        EnumListLabel.Text = "Choose enumeration:";
+        RectanglesGroupBox.Controls.Add(RectangleFindButton);
+        RectanglesGroupBox.Controls.Add(RectangleColorTextBox);
+        RectanglesGroupBox.Controls.Add(RectangleColorLabel);
+        RectanglesGroupBox.Controls.Add(RectangleWidthTextBox);
+        RectanglesGroupBox.Controls.Add(RectangleWidthLabel);
+        RectanglesGroupBox.Controls.Add(RectangleLenghtLabel);
+        RectanglesGroupBox.Controls.Add(RectangleLenghtTextBox);
+        RectanglesGroupBox.Controls.Add(RectanglesListBox);
+        RectanglesGroupBox.Location = new Point(8, 6);
+        RectanglesGroupBox.Name = "RectanglesGroupBox";
+        RectanglesGroupBox.Size = new Size(246, 215);
+        RectanglesGroupBox.TabIndex = 0;
+        RectanglesGroupBox.TabStop = false;
+        RectanglesGroupBox.Text = "Rectangles";
         // 
-        // ValueListLabel
+        // RectangleFindButton
         // 
-        ValueListLabel.AutoSize = true;
-        ValueListLabel.Location = new Point(192, 11);
-        ValueListLabel.Name = "ValueListLabel";
-        ValueListLabel.Size = new Size(81, 15);
-        ValueListLabel.TabIndex = 7;
-        ValueListLabel.Text = "Choose Value:";
+        RectangleFindButton.Location = new Point(139, 183);
+        RectangleFindButton.Name = "RectangleFindButton";
+        RectangleFindButton.Size = new Size(100, 23);
+        RectangleFindButton.TabIndex = 7;
+        RectangleFindButton.Text = "Find";
+        RectangleFindButton.UseVisualStyleBackColor = true;
+        RectangleFindButton.MouseClick += RectangleFindButton_Click;
+        // 
+        // RectangleColorTextBox
+        // 
+        RectangleColorTextBox.Location = new Point(140, 128);
+        RectangleColorTextBox.Name = "RectangleColorTextBox";
+        RectangleColorTextBox.Size = new Size(100, 23);
+        RectangleColorTextBox.TabIndex = 6;
+        // 
+        // RectangleColorLabel
+        // 
+        RectangleColorLabel.AutoSize = true;
+        RectangleColorLabel.Location = new Point(139, 110);
+        RectangleColorLabel.Name = "RectangleColorLabel";
+        RectangleColorLabel.Size = new Size(36, 15);
+        RectangleColorLabel.TabIndex = 5;
+        RectangleColorLabel.Text = "Color";
+        // 
+        // RectangleWidthTextBox
+        // 
+        RectangleWidthTextBox.Location = new Point(139, 84);
+        RectangleWidthTextBox.Name = "RectangleWidthTextBox";
+        RectangleWidthTextBox.Size = new Size(100, 23);
+        RectangleWidthTextBox.TabIndex = 4;
+        RectangleWidthTextBox.TextChanged += RectangleWidthTextBox_TextChanged;
+        // 
+        // RectangleWidthLabel
+        // 
+        RectangleWidthLabel.AutoSize = true;
+        RectangleWidthLabel.Location = new Point(139, 66);
+        RectangleWidthLabel.Name = "RectangleWidthLabel";
+        RectangleWidthLabel.Size = new Size(39, 15);
+        RectangleWidthLabel.TabIndex = 3;
+        RectangleWidthLabel.Text = "Width";
+        // 
+        // RectangleLenghtLabel
+        // 
+        RectangleLenghtLabel.AutoSize = true;
+        RectangleLenghtLabel.Location = new Point(139, 22);
+        RectangleLenghtLabel.Name = "RectangleLenghtLabel";
+        RectangleLenghtLabel.Size = new Size(44, 15);
+        RectangleLenghtLabel.TabIndex = 2;
+        RectangleLenghtLabel.Text = "Lenght";
+        // 
+        // RectangleLenghtTextBox
+        // 
+        RectangleLenghtTextBox.Location = new Point(139, 40);
+        RectangleLenghtTextBox.Name = "RectangleLenghtTextBox";
+        RectangleLenghtTextBox.Size = new Size(100, 23);
+        RectangleLenghtTextBox.TabIndex = 1;
+        RectangleLenghtTextBox.TextChanged += RectangleLenghtTextBox_TextChanged;
+        // 
+        // RectanglesListBox
+        // 
+        RectanglesListBox.FormattingEnabled = true;
+        RectanglesListBox.ItemHeight = 15;
+        RectanglesListBox.Location = new Point(6, 22);
+        RectanglesListBox.Name = "RectanglesListBox";
+        RectanglesListBox.Size = new Size(127, 184);
+        RectanglesListBox.TabIndex = 0;
+        RectanglesListBox.SelectedIndexChanged += RectanglesListBox_SelectedIndexChanged;
         // 
         // MainForm
         // 
         AutoScaleDimensions = new SizeF(7F, 15F);
         AutoScaleMode = AutoScaleMode.Font;
         ClientSize = new Size(800, 450);
-        Controls.Add(tabControl1);
+        Controls.Add(TabControl1);
         Name = "MainForm";
         Text = "Form1";
-        tabControl1.ResumeLayout(false);
+        TabControl1.ResumeLayout(false);
         tabPage1.ResumeLayout(false);
         tabPage1.PerformLayout();
         SeasonGroup.ResumeLayout(false);
         SeasonGroup.PerformLayout();
         groupBox1.ResumeLayout(false);
         groupBox1.PerformLayout();
+        tabPage2.ResumeLayout(false);
+        RectanglesGroupBox.ResumeLayout(false);
+        RectanglesGroupBox.PerformLayout();
         ResumeLayout(false);
     }
 
     #endregion
 
-    private TabControl tabControl1;
+    private TabControl TabControl1;
     private TabPage tabPage1;
     private ListBox EnumsListBox;
     private ListBox ValuesListBox;
@@ -259,4 +373,14 @@ partial class MainForm
     private Label ValueListLabel;
     private Label EnumListLabel;
     private Label IntValueBox;
+    private TabPage tabPage2;
+    private GroupBox RectanglesGroupBox;
+    private ListBox RectanglesListBox;
+    private TextBox RectangleLenghtTextBox;
+    private Button RectangleFindButton;
+    private TextBox RectangleColorTextBox;
+    private Label RectangleColorLabel;
+    private TextBox RectangleWidthTextBox;
+    private Label RectangleWidthLabel;
+    private Label RectangleLenghtLabel;
 }
