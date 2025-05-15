@@ -1,15 +1,39 @@
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using Programming.Model;
+using Programming.Model.Classes;
 
 namespace Programming
 {
     public partial class MainForm : Form
     {
+        private Model.Classes.Rectangle[] _rectangles;
+        private Model.Classes.Rectangle _currentRectangle;
+
         public MainForm()
         {
             InitializeComponent();
             this.Load += new EventHandler(MainForm_Load);
+
+            _rectangles = new Model.Classes.Rectangle[5];
+            Random random = new Random();
+            for (int i = 0; i < _rectangles.Length; i++)
+            {
+                double length = random.NextDouble() * 100;
+                double width = random.NextDouble() * 100;
+                int randomColorIndex = random.Next(Enum.GetValues(typeof(Model.Color)).Length);
+                Model.Color randomColor = (Model.Color)randomColorIndex;
+                _rectangles[i] = new Model.Classes.Rectangle(length, width, randomColor.ToString());
+            }
+
+            // Добавление элементов в ListBox
+            for (int i = 0; i < _rectangles.Length; i++)
+            {
+                RectanglesListBox.Items.Add($"Rectangle {i + 1}");
+            }
+
+            // Установка текущего прямоугольника
+            _currentRectangle = _rectangles[0];
         }
 
         private void MainForm_Load(object? sender, EventArgs e)
@@ -74,7 +98,7 @@ namespace Programming
             string inputText = TextParseBox.Text.Trim();
 
             if (int.TryParse(inputText, out int number))
-            {               
+            {
                 DayOfTheWeekInfo.Text = "Нет такого дня недели";
             }
             else if (Enum.TryParse(inputText, out Model.Weekday weekday))
@@ -83,8 +107,8 @@ namespace Programming
             }
             else
             {
-                DayOfTheWeekInfo.Text = "Нет такого дня недели"; 
-            }   
+                DayOfTheWeekInfo.Text = "Нет такого дня недели";
+            }
         }
 
         private void SeasonButton_Click(object sender, EventArgs e)
@@ -112,6 +136,84 @@ namespace Programming
                     MessageBox.Show("Выберите время года.");
                     break;
             }
+        }
+
+        private void RectanglesListBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (RectanglesListBox.SelectedItem != null)
+            {
+                _currentRectangle = _rectangles[RectanglesListBox.SelectedIndex];
+
+                RectangleLenghtTextBox.Text = _currentRectangle.Length.ToString("F0");
+                RectangleWidthTextBox.Text = _currentRectangle.Width.ToString("F0");
+                RectangleColorTextBox.Text = _currentRectangle.Color;
+            }
+
+        }
+
+        private void RectangleLenghtTextBox_TextChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                var newLenght = double.Parse(RectangleLenghtTextBox.Text.Trim());
+                if (newLenght < 0 || newLenght == 0)
+                    throw new ArgumentOutOfRangeException("Значение должно быть больше или не равно нулю");
+                _currentRectangle.Length = newLenght;
+                RectangleLenghtTextBox.BackColor = System.Drawing.Color.White; // Возвращаем нормальный белый фон
+            }
+            catch (ArgumentOutOfRangeException)
+            {
+                RectangleLenghtTextBox.BackColor = System.Drawing.Color.LightPink;
+            }
+            catch (Exception)
+            {
+                RectangleLenghtTextBox.BackColor = System.Drawing.Color.LightPink;
+            }
+        }
+
+        private void RectangleWidthTextBox_TextChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                var newWidth = double.Parse(RectangleWidthTextBox.Text.Trim());
+                if (newWidth < 0 || newWidth == 0)
+                    throw new ArgumentOutOfRangeException("Значение должно быть больше или не равно нулю");
+                _currentRectangle.Width = newWidth;
+                RectangleWidthTextBox.BackColor = System.Drawing.Color.White; // Возвращаем нормальный белый фон
+            }
+            catch (ArgumentOutOfRangeException)
+            {
+                RectangleWidthTextBox.BackColor = System.Drawing.Color.LightPink;
+            }
+            catch (Exception)
+            {
+                RectangleWidthTextBox.BackColor = System.Drawing.Color.LightPink;
+            }
+        }
+
+        private int FindRectangleWithMaxWidth(Model.Classes.Rectangle[] rectangles)
+        {
+            if (rectangles == null || rectangles.Length == 0)
+                throw new ArgumentException("Массив прямоугольников пустой или не существует");
+
+            int maxIndex = 0;
+            double maxWidth = rectangles[0].Width;
+
+            for (int i = 1; i < rectangles.Length; i++)
+            {
+                if (rectangles[i].Width > maxWidth)
+                {
+                    maxWidth = rectangles[i].Width;
+                    maxIndex = i;
+                }
+            }
+
+            return maxIndex;
+        }
+
+        private void RectangleFindButton_Click(object sender, MouseEventArgs e)
+        {
+            RectanglesListBox.SelectedIndex = FindRectangleWithMaxWidth(_rectangles);
         }
     }
 }
