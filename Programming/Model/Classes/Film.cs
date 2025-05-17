@@ -19,7 +19,7 @@ namespace Programming.Model.Classes
             get { return _durationInMinutes; }
             set
             {
-                if (value < 0) throw new ArgumentException("Продолжительность не может быть отрицательной");
+                Validator.AssertOnPositiveValue(value, nameof(DurationInMinutes));
                 _durationInMinutes = value;
             }
         }
@@ -29,8 +29,7 @@ namespace Programming.Model.Classes
             get { return _releaseYear; }
             set
             {
-                if (value < 1900 || value > DateTime.Now.Year)
-                    throw new ArgumentException($"Год выпуска должен быть между 1900 и {DateTime.Now.Year}");
+                Validator.AssertValueInRange(value, 1900, DateTime.Now.Year, nameof(ReleaseYear));
                 _releaseYear = value;
             }
         }
@@ -40,8 +39,7 @@ namespace Programming.Model.Classes
             get { return _rating; }
             set
             {
-                if (value < 0 || value > 10)
-                    throw new ArgumentException("Рейтинг должен быть между 0 и 10");
+                Validator.AssertValueInRange(value, 0, 10, nameof(Rating));
                 _rating = value;
             }
         }

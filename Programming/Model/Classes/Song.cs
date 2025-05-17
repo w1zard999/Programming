@@ -17,7 +17,7 @@ namespace Programming.Model.Classes
             get { return _duration; }
             set
             {
-                if (value < 0) throw new ArgumentException("Продолжительность песни не может быть отрицальной");
+                Validator.AssertOnPositiveValue(value, nameof(Duration));
                 _duration = value;
             }
         }
