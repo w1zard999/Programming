@@ -26,9 +26,11 @@ namespace Programming
             {
                 double length = random.NextDouble() * 100;
                 double width = random.NextDouble() * 100;
+                double centerCoordX = length / 2;
+                double centerCoordY = width / 2;
                 int randomColorIndex = random.Next(Enum.GetValues(typeof(Model.Color)).Length);
                 Model.Color randomColor = (Model.Color)randomColorIndex;
-                _rectangles[i] = new Model.Classes.Rectangle(length, width, randomColor.ToString());
+                _rectangles[i] = new Model.Classes.Rectangle(length, width, randomColor.ToString(), new Point2D(centerCoordX, centerCoordY));
             }
 
             _films[0] = new Model.Classes.Film("Дерево жизни", 138, 2011, "Драма, филосовская притча", 7.3);
@@ -42,7 +44,7 @@ namespace Programming
 
             for (int i = 0; i < _films.Length; i++)
             {
-                FilmsListBox.Items.Add($"FIlm {i + 1}");
+                FilmsListBox.Items.Add($"Film {i + 1}");
             }
 
             _currentRectangle = _rectangles[0];
@@ -157,8 +159,12 @@ namespace Programming
             {
                 _currentRectangle = _rectangles[RectanglesListBox.SelectedIndex];
 
-                RectangleLenghtTextBox.Text = _currentRectangle.Length.ToString("F0");
+                RectangleLenghtTextBox.Text = _currentRectangle.Length.ToString("F2");
+                RectangleWidthTextBox.Text = _currentRectangle.Width.ToString("F2");
+                TextBoxCenterCoordX.Text = _currentRectangle.Center.X.ToString("F2");
+                TextBoxCenterCoordY.Text = _currentRectangle.Center.Y.ToString("F2");
                 RectangleWidthTextBox.Text = _currentRectangle.Width.ToString("F0");
+                TextBoxRectangleId.Text = _currentRectangle.Id.ToString();
                 RectangleColorTextBox.Text = _currentRectangle.Color;
             }
 
@@ -169,10 +175,9 @@ namespace Programming
             try
             {
                 var newLenght = double.Parse(RectangleLenghtTextBox.Text.Trim());
-                if (newLenght < 0 || newLenght == 0)
-                    throw new ArgumentOutOfRangeException("Значение должно быть больше или не равно нулю");
+                Model.Classes.Validator.AssertOnPositiveValue(newLenght, nameof(newLenght));
                 _currentRectangle.Length = newLenght;
-                RectangleLenghtTextBox.BackColor = System.Drawing.Color.White; // Возвращаем нормальный белый фон
+                RectangleLenghtTextBox.BackColor = System.Drawing.Color.White;
             }
             catch (ArgumentOutOfRangeException)
             {
@@ -189,8 +194,7 @@ namespace Programming
             try
             {
                 var newWidth = double.Parse(RectangleWidthTextBox.Text.Trim());
-                if (newWidth < 0 || newWidth == 0)
-                    throw new ArgumentOutOfRangeException("Значение должно быть больше или не равно нулю");
+                Model.Classes.Validator.AssertOnPositiveValue(newWidth, nameof(newWidth));
                 _currentRectangle.Width = newWidth;
                 RectangleWidthTextBox.BackColor = System.Drawing.Color.White;
             }
@@ -263,8 +267,7 @@ namespace Programming
             try
             {
                 var newParseValue = int.Parse(FilmDurationTextBox.Text.Trim());
-                if (newParseValue < 1)
-                    throw new ArgumentOutOfRangeException("Значение должно быть больше или не равно нулю");
+                Model.Classes.Validator.AssertOnPositiveValue(newParseValue, nameof(newParseValue));
                 _currentFilm.DurationInMinutes = newParseValue;
                 FilmDurationTextBox.BackColor = System.Drawing.Color.White;
             }
@@ -283,8 +286,7 @@ namespace Programming
             try
             {
                 var newParseValue = int.Parse(FilmReleaseYearTextBox.Text.Trim());
-                if (newParseValue < 1900 || newParseValue > DateTime.Now.Year)
-                    throw new ArgumentOutOfRangeException("Год релиза не может быть меньше 1900 или больше настоящего времени");
+                Model.Classes.Validator.AssertValueInRange(newParseValue, 1900, DateTime.Now.Year, nameof(newParseValue));
                 _currentFilm.ReleaseYear = newParseValue;
                 FilmReleaseYearTextBox.BackColor = System.Drawing.Color.White;
             }
@@ -303,8 +305,7 @@ namespace Programming
             try
             {
                 var newParseValue = double.Parse(FilmRatingTextBox.Text.Trim());
-                if (newParseValue < 0 || newParseValue > 10)
-                    throw new ArgumentOutOfRangeException("Рейтинг не может быть меньше 0 или больше 10");
+                Model.Classes.Validator.AssertValueInRange(newParseValue, 0, 10, nameof(newParseValue));
                 _currentFilm.Rating = newParseValue;
                 FilmRatingTextBox.BackColor = System.Drawing.Color.White;
             }
@@ -369,6 +370,6 @@ namespace Programming
         private void FilmFindButton_Click(object sender, MouseEventArgs e)
         {
             FilmsListBox.SelectedIndex = FindFilmWithMaxRating(_films);
-        } 
+        }
     }
 }

@@ -60,6 +60,11 @@ partial class MainForm
         FilmTitleTextBox = new TextBox();
         FilmsListBox = new ListBox();
         RectanglesGroupBox = new GroupBox();
+        TextBoxCenterCoordY = new TextBox();
+        LabelCoordY = new Label();
+        LabelCoordX = new Label();
+        TextBoxCenterCoordX = new TextBox();
+        LabelCenterOfRectangle = new Label();
         RectangleFindButton = new Button();
         RectangleColorTextBox = new TextBox();
         RectangleColorLabel = new Label();
@@ -68,6 +73,8 @@ partial class MainForm
         RectangleLenghtLabel = new Label();
         RectangleLenghtTextBox = new TextBox();
         RectanglesListBox = new ListBox();
+        LabelRectangleId = new Label();
+        TextBoxRectangleId = new TextBox();
         TabControl1.SuspendLayout();
         tabPage1.SuspendLayout();
         SeasonGroup.SuspendLayout();
@@ -389,6 +396,13 @@ partial class MainForm
         // 
         // RectanglesGroupBox
         // 
+        RectanglesGroupBox.Controls.Add(TextBoxRectangleId);
+        RectanglesGroupBox.Controls.Add(LabelRectangleId);
+        RectanglesGroupBox.Controls.Add(TextBoxCenterCoordY);
+        RectanglesGroupBox.Controls.Add(LabelCoordY);
+        RectanglesGroupBox.Controls.Add(LabelCoordX);
+        RectanglesGroupBox.Controls.Add(TextBoxCenterCoordX);
+        RectanglesGroupBox.Controls.Add(LabelCenterOfRectangle);
         RectanglesGroupBox.Controls.Add(RectangleFindButton);
         RectanglesGroupBox.Controls.Add(RectangleColorTextBox);
         RectanglesGroupBox.Controls.Add(RectangleColorLabel);
@@ -403,6 +417,49 @@ partial class MainForm
         RectanglesGroupBox.TabIndex = 0;
         RectanglesGroupBox.TabStop = false;
         RectanglesGroupBox.Text = "Rectangles";
+        // 
+        // TextBoxCenterCoordY
+        // 
+        TextBoxCenterCoordY.Location = new Point(163, 224);
+        TextBoxCenterCoordY.Name = "TextBoxCenterCoordY";
+        TextBoxCenterCoordY.ReadOnly = true;
+        TextBoxCenterCoordY.Size = new Size(100, 23);
+        TextBoxCenterCoordY.TabIndex = 12;
+        // 
+        // LabelCoordY
+        // 
+        LabelCoordY.AutoSize = true;
+        LabelCoordY.Location = new Point(140, 227);
+        LabelCoordY.Name = "LabelCoordY";
+        LabelCoordY.Size = new Size(17, 15);
+        LabelCoordY.TabIndex = 11;
+        LabelCoordY.Text = "Y:";
+        // 
+        // LabelCoordX
+        // 
+        LabelCoordX.AutoSize = true;
+        LabelCoordX.Location = new Point(140, 198);
+        LabelCoordX.Name = "LabelCoordX";
+        LabelCoordX.Size = new Size(17, 15);
+        LabelCoordX.TabIndex = 10;
+        LabelCoordX.Text = "X:";
+        // 
+        // TextBoxCenterCoordX
+        // 
+        TextBoxCenterCoordX.Location = new Point(163, 195);
+        TextBoxCenterCoordX.Name = "TextBoxCenterCoordX";
+        TextBoxCenterCoordX.ReadOnly = true;
+        TextBoxCenterCoordX.Size = new Size(100, 23);
+        TextBoxCenterCoordX.TabIndex = 9;
+        // 
+        // LabelCenterOfRectangle
+        // 
+        LabelCenterOfRectangle.AutoSize = true;
+        LabelCenterOfRectangle.Location = new Point(139, 172);
+        LabelCenterOfRectangle.Name = "LabelCenterOfRectangle";
+        LabelCenterOfRectangle.Size = new Size(108, 15);
+        LabelCenterOfRectangle.TabIndex = 8;
+        LabelCenterOfRectangle.Text = "Center of rectangle";
         // 
         // RectangleFindButton
         // 
@@ -475,6 +532,23 @@ partial class MainForm
         RectanglesListBox.TabIndex = 0;
         RectanglesListBox.SelectedIndexChanged += RectanglesListBox_SelectedIndexChanged;
         // 
+        // LabelRectangleId
+        // 
+        LabelRectangleId.AutoSize = true;
+        LabelRectangleId.Location = new Point(257, 43);
+        LabelRectangleId.Name = "LabelRectangleId";
+        LabelRectangleId.Size = new Size(21, 15);
+        LabelRectangleId.TabIndex = 13;
+        LabelRectangleId.Text = "ID:";
+        // 
+        // TextBoxRectangleId
+        // 
+        TextBoxRectangleId.Location = new Point(284, 40);
+        TextBoxRectangleId.Name = "TextBoxRectangleId";
+        TextBoxRectangleId.ReadOnly = true;
+        TextBoxRectangleId.Size = new Size(42, 23);
+        TextBoxRectangleId.TabIndex = 14;
+        // 
         // MainForm
         // 
         AutoScaleDimensions = new SizeF(7F, 15F);
@@ -540,4 +614,11 @@ partial class MainForm
     private Label FilmRatingLable;
     private TextBox FilmGenreTextBox;
     private Label FilmGenreLable;
+    private TextBox TextBoxCenterCoordY;
+    private Label LabelCoordY;
+    private Label LabelCoordX;
+    private TextBox TextBoxCenterCoordX;
+    private Label LabelCenterOfRectangle;
+    private TextBox TextBoxRectangleId;
+    private Label LabelRectangleId;
 }
