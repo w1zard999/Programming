@@ -1,3 +1,4 @@
+using System;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using Programming.Model;
@@ -14,6 +15,8 @@ namespace Programming
         private Model.Classes.Film[] _films;
         private Model.Classes.Film _currentFilm;
 
+        private List<Panel> _rectanglePanels;
+
         public MainForm()
         {
             InitializeComponent();
@@ -21,14 +24,15 @@ namespace Programming
 
             _rectangles = new Model.Classes.Rectangle[5];
             _films = new Model.Classes.Film[3];
+            _rectanglePanels = new List<Panel>();
 
             Random random = new Random();
             for (int i = 0; i < _rectangles.Length; i++)
             {
                 double length = random.NextDouble() * 100;
                 double width = random.NextDouble() * 100;
-                double centerCoordX = random.Next(0, 256);
-                double centerCoordY = random.Next(0, 256);
+                double centerCoordX = random.Next(0, 550);
+                double centerCoordY = random.Next(0, 400);
                 int randomColorIndex = random.Next(Enum.GetValues(typeof(Model.Color)).Length);
                 Model.Color randomColor = (Model.Color)randomColorIndex;
                 _rectangles[i] = new Model.Classes.Rectangle(length, width, randomColor.ToString(), new Point2D(centerCoordX, centerCoordY));
@@ -52,8 +56,24 @@ namespace Programming
         {
             if (EnumsListBox.Items.Count > 0)
             {
-                EnumsListBox.SelectedIndex = 0; // Устанавливаем первый элемент по умолчанию
+                EnumsListBox.SelectedIndex = 0;
             }
+
+            for (int i = 0; i < _rectangles.Length; i++)
+            {
+                var rect = _rectangles[i];
+                Panel rectanglePanel = new Panel();
+                rectanglePanel.Width = (int)rect.Width;
+                rectanglePanel.Height = (int)rect.Length;
+                rectanglePanel.Location = new Point(
+                    (int)rect.Center.X - rectanglePanel.Width / 2,
+                    (int)rect.Center.Y - rectanglePanel.Height / 2);
+                rectanglePanel.BackColor = System.Drawing.Color.FromArgb(127, 127, 255, 127);
+                CanvasPanel.Controls.Add(rectanglePanel);
+                _rectanglePanels.Add(rectanglePanel);
+            }
+
+            FindCollisions();
         }
 
         private void RefreshRectanglesListBoxes()
@@ -427,13 +447,19 @@ namespace Programming
         {
             try
             {
-                var newLenght = double.Parse(LengthRectangleTextBox.Text.Trim());
-                Model.Classes.Validator.AssertOnPositiveValue(newLenght, nameof(newLenght));
-                _currentRectangle.Length = newLenght;
-                LengthRectangleTextBox.BackColor = System.Drawing.Color.White;
+                
                 if (RectanglesListBox1.SelectedIndex >= 0)
                 {
+                    var newLenght = double.Parse(LengthRectangleTextBox.Text.Trim());
+                    Model.Classes.Validator.AssertOnPositiveValue(newLenght, nameof(newLenght));
+                    _currentRectangle.Length = newLenght;
+                    LengthRectangleTextBox.BackColor = System.Drawing.Color.White;
+                    if (RectanglesListBox1.SelectedIndex < _rectanglePanels.Count)
+                    {
+                        _rectanglePanels[RectanglesListBox1.SelectedIndex].Height = (int)newLenght;
+                    }
                     RectanglesListBox1.Items[RectanglesListBox1.SelectedIndex] = $"{RectanglesListBox1.SelectedIndex + 1}: (X= {_currentRectangle.Center.X:F2}; Y= {_currentRectangle.Center.Y:F2}; W= {_currentRectangle.Width:F0}; L= {_currentRectangle.Length:F0})";
+                    FindCollisions();
                 }
             }
             catch (ArgumentOutOfRangeException)
@@ -450,13 +476,19 @@ namespace Programming
         {
             try
             {
-                var newWidth = double.Parse(WidthRectangleTextBox.Text.Trim());
-                Model.Classes.Validator.AssertOnPositiveValue(newWidth, nameof(newWidth));
-                _currentRectangle.Width = newWidth;
-                WidthRectangleTextBox.BackColor = System.Drawing.Color.White;
+                
                 if (RectanglesListBox1.SelectedIndex >= 0)
                 {
+                    var newWidth = double.Parse(WidthRectangleTextBox.Text.Trim());
+                    Model.Classes.Validator.AssertOnPositiveValue(newWidth, nameof(newWidth));
+                    _currentRectangle.Width = newWidth;
+                    WidthRectangleTextBox.BackColor = System.Drawing.Color.White;
+                    if (RectanglesListBox1.SelectedIndex < _rectanglePanels.Count)
+                    {
+                        _rectanglePanels[RectanglesListBox1.SelectedIndex].Width = (int)newWidth;
+                    }
                     RectanglesListBox1.Items[RectanglesListBox1.SelectedIndex] = $"{RectanglesListBox1.SelectedIndex + 1}: (X= {_currentRectangle.Center.X:F2}; Y= {_currentRectangle.Center.Y:F2}; W= {_currentRectangle.Width:F0}; L= {_currentRectangle.Length:F0})";
+                    FindCollisions();
                 }
             }
             catch (ArgumentOutOfRangeException)
@@ -472,14 +504,22 @@ namespace Programming
         private void XCoordRectangleTextBox_TextChanged(object sender, EventArgs e)
         {
             try
-            {
-                var newCoordX = double.Parse(XCoordRectangleTextBox.Text.Trim());
-                Model.Classes.Validator.AssertOnPositiveValue(newCoordX, nameof(newCoordX));
-                _currentRectangle.Center.X = newCoordX;
-                XCoordRectangleTextBox.BackColor = System.Drawing.Color.White;
+            {  
                 if (RectanglesListBox1.SelectedIndex >= 0)
                 {
+                    var newCoordX = double.Parse(XCoordRectangleTextBox.Text.Trim());
+                    Model.Classes.Validator.AssertOnPositiveValue(newCoordX, nameof(newCoordX));
+                    _currentRectangle.Center.X = newCoordX;
+                    XCoordRectangleTextBox.BackColor = System.Drawing.Color.White;
+                    if (RectanglesListBox1.SelectedIndex < _rectanglePanels.Count)
+                    {
+                        var panel = _rectanglePanels[RectanglesListBox1.SelectedIndex];
+                        panel.Location = new Point(
+                            (int)newCoordX - panel.Width / 2,
+                            panel.Location.Y);
+                    }
                     RectanglesListBox1.Items[RectanglesListBox1.SelectedIndex] = $"{RectanglesListBox1.SelectedIndex + 1}: (X= {_currentRectangle.Center.X:F2}; Y= {_currentRectangle.Center.Y:F2}; W= {_currentRectangle.Width:F0}; L= {_currentRectangle.Length:F0})";
+                    FindCollisions();
                 }
             }
             catch (Exception)
@@ -492,13 +532,22 @@ namespace Programming
         {
             try
             {
-                var newCoordY = double.Parse(YCoordRectangleTextBox.Text.Trim());
-                Model.Classes.Validator.AssertOnPositiveValue(newCoordY, nameof(newCoordY));
-                _currentRectangle.Center.Y = newCoordY;
-                YCoordRectangleTextBox.BackColor = System.Drawing.Color.White;
+                
                 if (RectanglesListBox1.SelectedIndex >= 0)
                 {
+                    var newCoordY = double.Parse(YCoordRectangleTextBox.Text.Trim());
+                    Model.Classes.Validator.AssertOnPositiveValue(newCoordY, nameof(newCoordY));
+                    _currentRectangle.Center.Y = newCoordY;
+                    YCoordRectangleTextBox.BackColor = System.Drawing.Color.White;
+                    if (RectanglesListBox1.SelectedIndex < _rectanglePanels.Count)
+                    {
+                        var panel = _rectanglePanels[RectanglesListBox1.SelectedIndex];
+                        panel.Location = new Point(
+                            panel.Location.X,
+                            (int)newCoordY - panel.Height / 2);
+                    }
                     RectanglesListBox1.Items[RectanglesListBox1.SelectedIndex] = $"{RectanglesListBox1.SelectedIndex + 1}: (X= {_currentRectangle.Center.X:F2}; Y= {_currentRectangle.Center.Y:F2}; W= {_currentRectangle.Width:F0}; L= {_currentRectangle.Length:F0})";
+                    FindCollisions();
                 }
             }
             catch (Exception)
@@ -512,16 +561,52 @@ namespace Programming
             try
             {
                 Model.Classes.Rectangle[] newRectangles = new Model.Classes.Rectangle[_rectangles.Length + 1];
-                for (int i = 0; i != _rectangles.Length; i++)
+                for (int i = 0; i < _rectangles.Length; i++)
                 {
                     newRectangles[i] = _rectangles[i];
                 }
 
+                Model.Classes.Rectangle newRectangle;
+
+                if (XCoordRectangleTextBox.Text != "" && YCoordRectangleTextBox.Text != "" && WidthRectangleTextBox.Text != "" && LengthRectangleTextBox.Text != "" && RectanglesListBox1.SelectedIndex == -1)
+                {
+                    Random random = new Random();
+                    double length = double.Parse(LengthRectangleTextBox.Text.Trim());
+                    double width = double.Parse(WidthRectangleTextBox.Text.Trim());
+                    double centerCoordX = double.Parse(XCoordRectangleTextBox.Text.Trim());
+                    double centerCoordY = double.Parse(YCoordRectangleTextBox.Text.Trim());
+                    int randomColorIndex = random.Next(Enum.GetValues(typeof(Model.Color)).Length);
+                    Model.Color randomColor = (Model.Color)randomColorIndex;
+                    newRectangle = new Model.Classes.Rectangle(length, width, randomColor.ToString(), new Point2D(centerCoordX, centerCoordY));
+                }
+                else
+                {
+                    Random random = new Random();
+                    double length = random.NextDouble() * 100;
+                    double width = random.NextDouble() * 100;
+                    double centerCoordX = random.Next(0, 256);
+                    double centerCoordY = random.Next(0, 256);
+                    int randomColorIndex = random.Next(Enum.GetValues(typeof(Model.Color)).Length);
+                    Model.Color randomColor = (Model.Color)randomColorIndex;
+                    newRectangle = new Model.Classes.Rectangle(length, width, randomColor.ToString(), new Point2D(centerCoordX, centerCoordY));
+                }
+
+                newRectangles[_rectangles.Length] = newRectangle;
                 _rectangles = newRectangles;
-                var newId = _rectangles.Length + 1;
-                RectanglesListBox1.Items.Add($"{newId + 1}: (X= {_rectangles[newId].Center.X:F2}; Y= {_rectangles[newId].Center.Y:F2}; W= {_rectangles[newId].Width:F0}; L= {_rectangles[newId].Length:F0})");
+
+                Panel rectanglePanel = new Panel();
+                rectanglePanel.Width = (int)newRectangle.Width;
+                rectanglePanel.Height = (int)newRectangle.Length;
+                rectanglePanel.Location = new Point((int)newRectangle.Center.X - rectanglePanel.Width / 2,(int)newRectangle.Center.Y - rectanglePanel.Height / 2);
+                rectanglePanel.BackColor = System.Drawing.Color.FromArgb(127, 127, 255, 127);
+
+                CanvasPanel.Controls.Add(rectanglePanel);
+                _rectanglePanels.Add(rectanglePanel);
+
                 RefreshRectanglesListBoxes();
-                ClearRectangleListBox();
+                FindCollisions();
+                RectanglesListBox.SelectedIndex = _rectangles.Length - 1;
+                RectanglesListBox1.SelectedIndex = _rectangles.Length - 1;
             }
             catch (Exception ex)
             {
@@ -537,6 +622,12 @@ namespace Programming
                 if (selectedIndex < 0 || selectedIndex >= _rectangles.Length)
                     throw new ArgumentOutOfRangeException("Не выбран прямоугольник для удаления");
 
+                if (selectedIndex < _rectanglePanels.Count)
+                {
+                    CanvasPanel.Controls.Remove(_rectanglePanels[selectedIndex]);
+                    _rectanglePanels.RemoveAt(selectedIndex);
+                }
+
                 Model.Classes.Rectangle[] newRectangles = new Model.Classes.Rectangle[_rectangles.Length - 1];
                 for (int i = 0, j = 0; i < _rectangles.Length; i++)
                 {
@@ -549,6 +640,7 @@ namespace Programming
                 _rectangles = newRectangles;
                 RefreshRectanglesListBoxes();
                 ClearRectangleListBox();
+                FindCollisions();
             }
             catch (ArgumentOutOfRangeException ex)
             {
@@ -565,6 +657,28 @@ namespace Programming
             if (TabControl1.TabIndex == 1 || TabControl1.TabIndex == 2)
             {
                 RefreshRectanglesListBoxes();
+            }
+        }
+
+        private void FindCollisions()
+        {
+            foreach (var panel in _rectanglePanels)
+            {
+                panel.BackColor = System.Drawing.Color.FromArgb(127, 127, 255, 127);
+            }
+
+            for (int i = 0; i < _rectangles.Length; i++)
+            {
+                for (int j = i + 1; j < _rectangles.Length; j++)
+                {
+                    if (CollisionManager.IsCollision(_rectangles[i], _rectangles[j]))
+                    {
+                        if (i < _rectanglePanels.Count)
+                            _rectanglePanels[i].BackColor = System.Drawing.Color.FromArgb(127, 255, 127, 127);
+                        if (j < _rectanglePanels.Count)
+                            _rectanglePanels[j].BackColor = System.Drawing.Color.FromArgb(127, 255, 127, 127);
+                    }
+                }
             }
         }
     }

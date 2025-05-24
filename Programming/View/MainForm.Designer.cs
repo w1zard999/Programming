@@ -86,7 +86,7 @@ partial class MainForm
         YCoordRectangleTextBox = new TextBox();
         XCoordRectangleTextBox = new TextBox();
         IdRectangleTextBox = new TextBox();
-        RectanglePanel = new Panel();
+        CanvasPanel = new Panel();
         SelectedRectagleLable = new Label();
         RemoveRectangleButton = new Button();
         AddRectangleButton = new Button();
@@ -581,7 +581,7 @@ partial class MainForm
         tabPage3.Controls.Add(YCoordRectangleTextBox);
         tabPage3.Controls.Add(XCoordRectangleTextBox);
         tabPage3.Controls.Add(IdRectangleTextBox);
-        tabPage3.Controls.Add(RectanglePanel);
+        tabPage3.Controls.Add(CanvasPanel);
         tabPage3.Controls.Add(SelectedRectagleLable);
         tabPage3.Controls.Add(RemoveRectangleButton);
         tabPage3.Controls.Add(AddRectangleButton);
@@ -680,13 +680,13 @@ partial class MainForm
         IdRectangleTextBox.Size = new Size(100, 23);
         IdRectangleTextBox.TabIndex = 6;
         // 
-        // RectanglePanel
+        // CanvasPanel
         // 
-        RectanglePanel.BorderStyle = BorderStyle.FixedSingle;
-        RectanglePanel.Location = new Point(241, 6);
-        RectanglePanel.Name = "RectanglePanel";
-        RectanglePanel.Size = new Size(545, 410);
-        RectanglePanel.TabIndex = 5;
+        CanvasPanel.BorderStyle = BorderStyle.FixedSingle;
+        CanvasPanel.Location = new Point(241, 6);
+        CanvasPanel.Name = "CanvasPanel";
+        CanvasPanel.Size = new Size(545, 410);
+        CanvasPanel.TabIndex = 5;
         // 
         // SelectedRectagleLable
         // 
@@ -817,7 +817,7 @@ partial class MainForm
     private ListBox RectanglesListBox1;
     private Button AddRectangleButton;
     private Label RectanglesLabel;
-    private Panel RectanglePanel;
+    private Panel CanvasPanel;
     private Label SelectedRectagleLable;
     private Button RemoveRectangleButton;
     private Label WidthRectangleLable;
