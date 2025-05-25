@@ -3,6 +3,7 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using Programming.Model;
 using Programming.Model.Classes;
+using Programming.Model.Classes.Geometry;
 using static System.Windows.Forms.DataFormats;
 
 namespace Programming
@@ -29,13 +30,7 @@ namespace Programming
             Random random = new Random();
             for (int i = 0; i < _rectangles.Length; i++)
             {
-                double length = random.NextDouble() * 100;
-                double width = random.NextDouble() * 100;
-                double centerCoordX = random.Next(0, 550);
-                double centerCoordY = random.Next(0, 400);
-                int randomColorIndex = random.Next(Enum.GetValues(typeof(Model.Color)).Length);
-                Model.Color randomColor = (Model.Color)randomColorIndex;
-                _rectangles[i] = new Model.Classes.Rectangle(length, width, randomColor.ToString(), new Point2D(centerCoordX, centerCoordY));
+                _rectangles[i] = RectangleFactory.Randomize();
             }
 
             _films[0] = new Model.Classes.Film("Дерево жизни", 138, 2011, "Драма, филосовская притча", 7.3);
@@ -94,18 +89,34 @@ namespace Programming
             _currentRectangle = _rectangles[0];
         }
 
-        private void ClearRectangleListBox()
+        private void UpdateRectangleInfo(Model.Classes.Rectangle rectangle)
         {
-            LengthRectangleTextBox.Text = "";
-            WidthRectangleTextBox.Text = "";
-            XCoordRectangleTextBox.Text = "";
-            YCoordRectangleTextBox.Text = "";
-            RectangleWidthTextBox.Text = "";
-            IdRectangleTextBox.Text = "";
+            if (rectangle == null) return;
+
+            LengthRectangleTextBox.Text = rectangle.Length.ToString("F2");
+            WidthRectangleTextBox.Text = rectangle.Width.ToString("F2");
+            XCoordRectangleTextBox.Text = rectangle.Center.X.ToString("F2");
+            YCoordRectangleTextBox.Text = rectangle.Center.Y.ToString("F2");
+            IdRectangleTextBox.Text = rectangle.Id.ToString();
+
             LengthRectangleTextBox.BackColor = System.Drawing.Color.White;
             WidthRectangleTextBox.BackColor = System.Drawing.Color.White;
-            YCoordRectangleTextBox.BackColor = System.Drawing.Color.White;
             XCoordRectangleTextBox.BackColor = System.Drawing.Color.White;
+            YCoordRectangleTextBox.BackColor = System.Drawing.Color.White;
+        }
+
+        private void ClearRectangleInfo()
+        {
+            LengthRectangleTextBox.Text = string.Empty;
+            WidthRectangleTextBox.Text = string.Empty;
+            XCoordRectangleTextBox.Text = string.Empty;
+            YCoordRectangleTextBox.Text = string.Empty;
+            IdRectangleTextBox.Text = string.Empty;
+
+            LengthRectangleTextBox.BackColor = System.Drawing.Color.White;
+            WidthRectangleTextBox.BackColor = System.Drawing.Color.White;
+            XCoordRectangleTextBox.BackColor = System.Drawing.Color.White;
+            YCoordRectangleTextBox.BackColor = System.Drawing.Color.White;
         }
 
         private void EnumsListBox_SelectedIndexChanged(object sender, EventArgs e)
@@ -425,12 +436,7 @@ namespace Programming
             if (RectanglesListBox1.SelectedIndex != -1 && RectanglesListBox1.SelectedIndex < _rectangles.Length)
                 {
                 _currentRectangle = _rectangles[RectanglesListBox1.SelectedIndex];
-
-                LengthRectangleTextBox.Text = _currentRectangle.Length.ToString("F2");
-                WidthRectangleTextBox.Text = _currentRectangle.Width.ToString("F2");
-                XCoordRectangleTextBox.Text = _currentRectangle.Center.X.ToString("F2");
-                YCoordRectangleTextBox.Text = _currentRectangle.Center.Y.ToString("F2");
-                IdRectangleTextBox.Text = _currentRectangle.Id.ToString();
+                UpdateRectangleInfo(_currentRectangle);
             }
         }
 
@@ -438,7 +444,7 @@ namespace Programming
         {
             if (RectanglesListBox1.IndexFromPoint(e.Location) == -1)
             {
-                ClearRectangleListBox();
+                ClearRectangleInfo();
                 RectanglesListBox1.SelectedIndex = -1;
             }
         }
@@ -447,8 +453,24 @@ namespace Programming
         {
             try
             {
-                
-                if (RectanglesListBox1.SelectedIndex >= 0)
+
+                if (RectanglesListBox1.SelectedIndex == -1)
+                {
+                    try
+                    {
+                        if (!string.IsNullOrWhiteSpace(LengthRectangleTextBox.Text))
+                        {
+                            var newCoordY = double.Parse(YCoordRectangleTextBox.Text);
+                            Validator.AssertOnPositiveValue(newCoordY, nameof(newCoordY));
+                            LengthRectangleTextBox.BackColor = System.Drawing.Color.White;
+                        }
+                    }
+                    catch
+                    {
+                        LengthRectangleTextBox.BackColor = System.Drawing.Color.LightPink;
+                    }
+                }
+                else
                 {
                     var newLenght = double.Parse(LengthRectangleTextBox.Text.Trim());
                     Model.Classes.Validator.AssertOnPositiveValue(newLenght, nameof(newLenght));
@@ -476,8 +498,24 @@ namespace Programming
         {
             try
             {
-                
-                if (RectanglesListBox1.SelectedIndex >= 0)
+
+                if (RectanglesListBox1.SelectedIndex == -1)
+                {
+                    try
+                    {
+                        if (!string.IsNullOrWhiteSpace(WidthRectangleTextBox.Text))
+                        {
+                            var newWidth = double.Parse(WidthRectangleTextBox.Text);
+                            Validator.AssertOnPositiveValue(newWidth, nameof(newWidth));
+                            WidthRectangleTextBox.BackColor = System.Drawing.Color.White;
+                        }
+                    }
+                    catch
+                    {
+                        WidthRectangleTextBox.BackColor = System.Drawing.Color.LightPink;
+                    }
+                }
+                else
                 {
                     var newWidth = double.Parse(WidthRectangleTextBox.Text.Trim());
                     Model.Classes.Validator.AssertOnPositiveValue(newWidth, nameof(newWidth));
@@ -504,8 +542,24 @@ namespace Programming
         private void XCoordRectangleTextBox_TextChanged(object sender, EventArgs e)
         {
             try
-            {  
-                if (RectanglesListBox1.SelectedIndex >= 0)
+            {
+                if (RectanglesListBox1.SelectedIndex == -1)
+                {
+                    try
+                    {
+                        if (!string.IsNullOrWhiteSpace(XCoordRectangleTextBox.Text))
+                        {
+                            var newCoordX = double.Parse(XCoordRectangleTextBox.Text);
+                            Validator.AssertOnPositiveValue(newCoordX, nameof(newCoordX));
+                            XCoordRectangleTextBox.BackColor = System.Drawing.Color.White;
+                        }
+                    }
+                    catch
+                    {
+                        XCoordRectangleTextBox.BackColor = System.Drawing.Color.LightPink;
+                    }
+                }
+                else
                 {
                     var newCoordX = double.Parse(XCoordRectangleTextBox.Text.Trim());
                     Model.Classes.Validator.AssertOnPositiveValue(newCoordX, nameof(newCoordX));
@@ -532,8 +586,23 @@ namespace Programming
         {
             try
             {
-                
-                if (RectanglesListBox1.SelectedIndex >= 0)
+                if (RectanglesListBox1.SelectedIndex == -1)
+                {
+                    try
+                    {
+                        if (!string.IsNullOrWhiteSpace(YCoordRectangleTextBox.Text))
+                        {
+                            var newCoordY = double.Parse(YCoordRectangleTextBox.Text);
+                            Validator.AssertOnPositiveValue(newCoordY, nameof(newCoordY));
+                            YCoordRectangleTextBox.BackColor = System.Drawing.Color.White;
+                        }
+                    }
+                    catch
+                    {
+                        YCoordRectangleTextBox.BackColor = System.Drawing.Color.LightPink;
+                    }
+                }
+                else
                 {
                     var newCoordY = double.Parse(YCoordRectangleTextBox.Text.Trim());
                     Model.Classes.Validator.AssertOnPositiveValue(newCoordY, nameof(newCoordY));
@@ -568,7 +637,7 @@ namespace Programming
 
                 Model.Classes.Rectangle newRectangle;
 
-                if (XCoordRectangleTextBox.Text != "" && YCoordRectangleTextBox.Text != "" && WidthRectangleTextBox.Text != "" && LengthRectangleTextBox.Text != "" && RectanglesListBox1.SelectedIndex == -1)
+                if (ValidateRectangleInput())
                 {
                     Random random = new Random();
                     double length = double.Parse(LengthRectangleTextBox.Text.Trim());
@@ -581,28 +650,13 @@ namespace Programming
                 }
                 else
                 {
-                    Random random = new Random();
-                    double length = random.NextDouble() * 100;
-                    double width = random.NextDouble() * 100;
-                    double centerCoordX = random.Next(0, 256);
-                    double centerCoordY = random.Next(0, 256);
-                    int randomColorIndex = random.Next(Enum.GetValues(typeof(Model.Color)).Length);
-                    Model.Color randomColor = (Model.Color)randomColorIndex;
-                    newRectangle = new Model.Classes.Rectangle(length, width, randomColor.ToString(), new Point2D(centerCoordX, centerCoordY));
+                    newRectangle = RectangleFactory.Randomize();
                 }
 
                 newRectangles[_rectangles.Length] = newRectangle;
                 _rectangles = newRectangles;
 
-                Panel rectanglePanel = new Panel();
-                rectanglePanel.Width = (int)newRectangle.Width;
-                rectanglePanel.Height = (int)newRectangle.Length;
-                rectanglePanel.Location = new Point((int)newRectangle.Center.X - rectanglePanel.Width / 2,(int)newRectangle.Center.Y - rectanglePanel.Height / 2);
-                rectanglePanel.BackColor = System.Drawing.Color.FromArgb(127, 127, 255, 127);
-
-                CanvasPanel.Controls.Add(rectanglePanel);
-                _rectanglePanels.Add(rectanglePanel);
-
+                AddRectanglePanel(newRectangle);
                 RefreshRectanglesListBoxes();
                 FindCollisions();
                 RectanglesListBox.SelectedIndex = _rectangles.Length - 1;
@@ -612,6 +666,29 @@ namespace Programming
             {
                 MessageBox.Show($"Произошла ошибка при создании: {ex.Message}");
             }
+        }
+
+        private bool ValidateRectangleInput()
+        {
+            return !string.IsNullOrWhiteSpace(XCoordRectangleTextBox.Text) &&
+                   !string.IsNullOrWhiteSpace(YCoordRectangleTextBox.Text) &&
+                   !string.IsNullOrWhiteSpace(WidthRectangleTextBox.Text) &&
+                   !string.IsNullOrWhiteSpace(LengthRectangleTextBox.Text) &&
+                   RectanglesListBox1.SelectedIndex == -1;
+        }
+
+        private void AddRectanglePanel(Model.Classes.Rectangle rectangle)
+        {
+            var panel = new Panel
+            {
+                Width = (int)rectangle.Width,
+                Height = (int)rectangle.Length,
+                Location = new Point((int)rectangle.Center.X - (int)rectangle.Width / 2, (int)rectangle.Center.Y - (int)rectangle.Length / 2),
+                BackColor = System.Drawing.Color.FromArgb(127, 127, 255, 127)
+            };
+
+            CanvasPanel.Controls.Add(panel);
+            _rectanglePanels.Add(panel);
         }
 
         private void RemoveRectangleButton_Click(object sender, EventArgs e)
@@ -639,7 +716,7 @@ namespace Programming
 
                 _rectangles = newRectangles;
                 RefreshRectanglesListBoxes();
-                ClearRectangleListBox();
+                ClearRectangleInfo();
                 FindCollisions();
             }
             catch (ArgumentOutOfRangeException ex)

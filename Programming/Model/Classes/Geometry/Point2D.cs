@@ -13,8 +13,8 @@ namespace Programming.Model.Classes
 
         public Point2D(double x, double y)
         {
-            Validator.AssertValueInRange(x, 0, 550, nameof(X));
-            Validator.AssertValueInRange(y, 0, 400, nameof(Y));
+            Validator.AssertValueInRange(x, 0, 1000, nameof(X));
+            Validator.AssertValueInRange(y, 0, 1000, nameof(Y));
 
             this.X = x;
             this.Y = y;
