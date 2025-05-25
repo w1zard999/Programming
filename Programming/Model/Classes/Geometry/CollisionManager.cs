@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Programming.Model.Classes
+namespace Programming.Model.Classes.Geometry
 {
     public static class CollisionManager
     {
@@ -18,8 +18,8 @@ namespace Programming.Model.Classes
             double halfHeight1 = rectangle1.Length / 2.0;
             double halfHeight2 = rectangle2.Length / 2.0;
 
-            bool overlapX = deltaX < (halfWidth1 + halfWidth2);
-            bool overlapY = deltaY < (halfHeight1 + halfHeight2);
+            bool overlapX = deltaX < halfWidth1 + halfWidth2;
+            bool overlapY = deltaY < halfHeight1 + halfHeight2;
 
             return overlapX && overlapY;
         }

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Programming.Model.Classes
+namespace Programming.Model.Classes.Geometry
 {
     public class Ring
     {
@@ -44,9 +44,9 @@ namespace Programming.Model.Classes
 
         public Ring(Point2D center, double outerRadius, double innerRadius)
         {
-            this.Center = center;
-            this.OuterRadius = outerRadius;
-            this.InnerRadius = innerRadius;
+            Center = center;
+            OuterRadius = outerRadius;
+            InnerRadius = innerRadius;
         }
     }
 }

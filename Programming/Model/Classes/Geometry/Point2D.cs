@@ -8,13 +8,13 @@ namespace Programming.Model.Classes
 {
     public class Point2D
     {
-        public double X {  get; private set; }
-        public double Y { get; private set; }
+        public double X {  get; set; }
+        public double Y { get; set; }
 
         public Point2D(double x, double y)
         {
-            Validator.AssertValueInRange(x, 0, 256, nameof(X));
-            Validator.AssertValueInRange(y, 0, 256, nameof(Y));
+            Validator.AssertValueInRange(x, 0, 1000, nameof(X));
+            Validator.AssertValueInRange(y, 0, 1000, nameof(Y));
 
             this.X = x;
             this.Y = y;
