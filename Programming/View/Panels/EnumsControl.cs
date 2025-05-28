@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Programming.Model.Enums;
 
 namespace Programming.View.Panels
 {
@@ -19,49 +20,43 @@ namespace Programming.View.Panels
             if (EnumsListBox.Items.Count > 0)
             {
                 EnumsListBox.SelectedIndex = 0;
-                ValuesListBox.SelectedIndex = 0;
             }
         }
 
         private void EnumsListBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            ValuesListBox.SelectedIndex = 0;
-            if (EnumsListBox.SelectedItem != null)
-            {
-                string selectedText = (string)EnumsListBox.SelectedItem;
+            if (EnumsListBox.SelectedItem == null) return;
 
-                switch (selectedText)
-                {
-                    case "Color":
-                        AddToValueList(typeof(Model.Color));
-                        break;
-                    case "Genre":
-                        AddToValueList(typeof(Model.Genre));
-                        break;
-                    case "Season":
-                        AddToValueList(typeof(Model.Season));
-                        break;
-                    case "SmartphoneManufacturer":
-                        AddToValueList(typeof(Model.SmartphoneManufacturer));
-                        break;
-                    case "StudentEducationType":
-                        AddToValueList(typeof(Model.StudentEducationType));
-                        break;
-                    case "Weekday":
-                        AddToValueList(typeof(Model.Weekday));
-                        break;
-                }
+            string selectedText = (string)EnumsListBox.SelectedItem;
+
+            switch (selectedText)
+            {
+                case "Color":
+                    AddToValueList(typeof(Model.Enums.Color));
+                    break;
+                case "Genre":
+                    AddToValueList(typeof(Model.Enums.Genre));
+                    break;
+                case "Season":
+                    AddToValueList(typeof(Model.Enums.Season));
+                    break;
+                case "SmartphoneManufacturer":
+                    AddToValueList(typeof(Model.Enums.SmartphoneManufacturer));
+                    break;
+                case "StudentEducationType":
+                    AddToValueList(typeof(Model.Enums.StudentEducationType));
+                    break;
+                case "Weekday":
+                    AddToValueList(typeof(Model.Enums.Weekday));
+                    break;
             }
+            
         }
 
         void AddToValueList(Type enumType)
         {
             ValuesListBox.Items.Clear();
-            Array array = Enum.GetValues(enumType);
-            foreach (var element in array)
-            {
-                ValuesListBox.Items.Add(element);
-            }
+            ValuesListBox.Items.AddRange(Enum.GetNames(enumType));
         }
 
         private void ValuesListBox_SelectedIndexChanged(object sender, EventArgs e)
@@ -81,7 +76,7 @@ namespace Programming.View.Panels
             {
                 DayOfTheWeekInfo.Text = "Нет такого дня недели";
             }
-            else if (Enum.TryParse(inputText, out Model.Weekday weekday))
+            else if (Enum.TryParse(inputText, out Weekday weekday))
             {
                 DayOfTheWeekInfo.Text = $"Это день недели ({weekday} = {(int)weekday + 1})";
             }

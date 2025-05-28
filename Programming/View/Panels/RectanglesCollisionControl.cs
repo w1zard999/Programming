@@ -311,8 +311,8 @@ namespace Programming.View.Panels
                     double width = double.Parse(WidthRectangleTextBox.Text.Trim());
                     double centerCoordX = double.Parse(XCoordRectangleTextBox.Text.Trim());
                     double centerCoordY = double.Parse(YCoordRectangleTextBox.Text.Trim());
-                    int randomColorIndex = random.Next(Enum.GetValues(typeof(Model.Color)).Length);
-                    Model.Color randomColor = (Model.Color)randomColorIndex;
+                    int randomColorIndex = random.Next(Enum.GetValues(typeof(Model.Enums.Color)).Length);
+                    Model.Enums.Color randomColor = (Model.Enums.Color)randomColorIndex;
                     newRectangle = new Model.Classes.Rectangle(length, width, randomColor.ToString(), new Point2D(centerCoordX, centerCoordY));
                 }
                 else

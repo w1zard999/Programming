@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Programming.Model.Enums;
 
 namespace Programming.Model.Classes.Geometry
 {
@@ -16,8 +17,8 @@ namespace Programming.Model.Classes.Geometry
             double width = _random.NextDouble() * 100;
             double centerX = _random.Next(0, 550);
             double centerY = _random.Next(0, 400);
-            int colorIndex = _random.Next(Enum.GetValues(typeof(Color)).Length);
-            Color color = (Color)colorIndex;
+            int colorIndex = _random.Next(Enum.GetValues(typeof(Enums.Color)).Length);
+            Enums.Color color = (Enums.Color)colorIndex;
 
             return new Rectangle(length, width, color.ToString(), new Point2D(centerX, centerY));
         }
