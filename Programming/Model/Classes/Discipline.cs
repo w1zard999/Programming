@@ -8,10 +8,24 @@ namespace Programming.Model.Classes
 {
     public class Discipline
     {
+        /// <summary>
+        /// Название дисциплины.
+        /// </summary>
         public string _name;
+
+        /// <summary>
+        /// Группа студентов, изучающая дисциплину.
+        /// </summary>
         public string _group;
+
+        /// <summary>
+        /// Оценка по дисциплине.
+        /// </summary>
         private int _score;
 
+        /// <summary>
+        /// Возвращает и задаёт название дисциплины.
+        /// </summary>
         public string Name
         {
             get { return _name; }
@@ -22,6 +36,9 @@ namespace Programming.Model.Classes
             }
         }
 
+        /// <summary>
+        /// Возвращает и задаёт группу студентов.
+        /// </summary>
         public string Group
         {
             get { return _group; }
@@ -32,6 +49,9 @@ namespace Programming.Model.Classes
             }
         }
 
+        /// <summary>
+        /// Возвращает и задаёт оценку по дисциплине.
+        /// </summary>
         public int Score
         {
             get { return _score; }
@@ -42,8 +62,17 @@ namespace Programming.Model.Classes
             }
         }
 
+        /// <summary>
+        /// Конструктор по умолчанию.
+        /// </summary>
         public Discipline() { }
 
+        /// <summary>
+        /// Конструктор с основными параметрами дисциплины.
+        /// </summary>
+        /// <param name="name">Название дисциплины.</param>
+        /// <param name="credits">Оценка (количество баллов).</param>
+        /// <param name="group">Группа студентов.</param>
         public Discipline(string name, int credits, string group)
         {
             this.Name = name;
