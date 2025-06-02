@@ -9,8 +9,15 @@ namespace Programming.Model.Classes.Geometry
 {
     public static class RectangleFactory
     {
+        /// <summary>
+        /// Генерирует случайные значения для создания прямоугольника.
+        /// </summary>
         private static Random _random = new Random();
 
+        /// <summary>
+        /// Создаёт случайный прямоугольник с произвольными размерами и положением.
+        /// </summary>
+        /// <returns>Экземпляр класса <see cref="Rectangle"/> с случайно сгенерированными характеристиками.</returns>
         public static Rectangle Randomize()
         {
             double length = _random.NextDouble() * 100;

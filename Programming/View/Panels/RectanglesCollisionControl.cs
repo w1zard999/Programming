@@ -15,10 +15,25 @@ namespace Programming.View.Panels
 {
     public partial class RectanglesCollisionControl : UserControl
     {
+        /// <summary>
+        /// Массив прямоугольников модели.
+        /// </summary>
         private Model.Classes.Rectangle[] _rectangles;
+
+        /// <summary>
+        /// Текущий выделенный прямоугольник.
+        /// </summary>
         private Model.Classes.Rectangle _currentRectangle;
+
+        /// <summary>
+        /// Коллекция панелей отображающих прямоугольники.
+        /// </summary>
         private List<Panel> _rectanglePanels;
 
+        /// <summary>
+        /// Создаёт экземпляр класса <see cref="RectanglesCollisionControl"/>,
+        /// инициализирует компоненты и создаёт случайные прямоугольники.
+        /// </summary>
         public RectanglesCollisionControl()
         {
             InitializeComponent();
@@ -26,6 +41,9 @@ namespace Programming.View.Panels
             InitializeRectangles();
         }
 
+        /// <summary>
+        /// Инициализирует массив прямоугольников и визуализирует их на панели.
+        /// </summary>
         private void InitializeRectangles()
         {
             _rectangles = new Model.Classes.Rectangle[5];
@@ -50,6 +68,10 @@ namespace Programming.View.Panels
             FindCollisions();
         }
 
+        /// <summary>
+        /// Обновляет информацию о прямоугольниках в интерфейсе.
+        /// </summary>
+        /// <param name="rectangle">Прямоугольник, информация о котором обновляется.</param>
         private void UpdateRectangleInfo(Model.Classes.Rectangle rectangle)
         {
             if (rectangle == null) return;
@@ -66,6 +88,9 @@ namespace Programming.View.Panels
             YCoordRectangleTextBox.BackColor = System.Drawing.Color.White;
         }
 
+        /// <summary>
+        /// Очищает информацию о прямоугольнике в интерфейсе.
+        /// </summary>
         private void ClearRectangleInfo()
         {
             LengthRectangleTextBox.Text = string.Empty;
@@ -80,6 +105,9 @@ namespace Programming.View.Panels
             YCoordRectangleTextBox.BackColor = System.Drawing.Color.White;
         }
 
+        /// <summary>
+        /// Обновляет список прямоугольников в выпадающем меню.
+        /// </summary>
         private void RefreshRectanglesListBox()
         {
             RectanglesListBox.Items.Clear();
@@ -95,6 +123,11 @@ namespace Programming.View.Panels
             _currentRectangle = _rectangles[0];
         }
 
+        /// <summary>
+        /// Обработчик события изменения выбранного индекса в списке прямоугольников.
+        /// </summary>
+        /// <param name="sender">Источник события.</param>
+        /// <param name="e">Данные события.</param>
         private void RectanglesListBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (RectanglesListBox.SelectedIndex == -1 || RectanglesListBox.SelectedIndex >= _rectangles.Length)
@@ -107,6 +140,11 @@ namespace Programming.View.Panels
             UpdateRectangleInfo(_currentRectangle);
         }
 
+        /// <summary>
+        /// Обработчик события клика мыши по списку прямоугольников.
+        /// </summary>
+        /// <param name="sender">Источник события.</param>
+        /// <param name="e">Данные события.</param>
         private void RectanglesListBox_MouseDown(object sender, MouseEventArgs e)
         {
             if (RectanglesListBox.IndexFromPoint(e.Location) == -1)
@@ -116,11 +154,15 @@ namespace Programming.View.Panels
             }
         }
 
+        /// <summary>
+        /// Обработчик изменения длины прямоугольника.
+        /// </summary>
+        /// <param name="sender">Источник события.</param>
+        /// <param name="e">Данные события.</param>
         private void LengthRectangleTextBox_TextChanged(object sender, EventArgs e)
         {
             try
             {
-
                 if (RectanglesListBox.SelectedIndex == -1)
                 {
                     try
@@ -161,11 +203,15 @@ namespace Programming.View.Panels
             }
         }
 
+        /// <summary>
+        /// Обработчик изменения ширины прямоугольника.
+        /// </summary>
+        /// <param name="sender">Источник события.</param>
+        /// <param name="e">Данные события.</param>
         private void WidthRectangleTextBox_TextChanged(object sender, EventArgs e)
         {
             try
             {
-
                 if (RectanglesListBox.SelectedIndex == -1)
                 {
                     try
@@ -206,6 +252,11 @@ namespace Programming.View.Panels
             }
         }
 
+        /// <summary>
+        /// Обработчик изменения координаты X центра прямоугольника.
+        /// </summary>
+        /// <param name="sender">Источник события.</param>
+        /// <param name="e">Данные события.</param>
         private void XCoordRectangleTextBox_TextChanged(object sender, EventArgs e)
         {
             try
@@ -249,6 +300,11 @@ namespace Programming.View.Panels
             }
         }
 
+        /// <summary>
+        /// Обработчик изменения координаты Y центра прямоугольника.
+        /// </summary>
+        /// <param name="sender">Источник события.</param>
+        /// <param name="e">Параметры события.</param>
         private void YCoordRectangleTextBox_TextChanged(object sender, EventArgs e)
         {
             try
@@ -292,6 +348,11 @@ namespace Programming.View.Panels
             }
         }
 
+        /// <summary>
+        /// Обработчик события нажатия кнопки добавления прямоугольника.
+        /// </summary>
+        /// <param name="sender">Источник события.</param>
+        /// <param name="e">Параметры события.</param>
         private void AddRectangleButton_Click(object sender, EventArgs e)
         {
             try
@@ -335,6 +396,10 @@ namespace Programming.View.Panels
             }
         }
 
+        /// <summary>
+        /// Валидатор ввода координат и размеров прямоугольника.
+        /// </summary>
+        /// <returns>true, если ввод допустимый; false иначе.</returns>
         private bool ValidateRectangleInput()
         {
             return !string.IsNullOrWhiteSpace(XCoordRectangleTextBox.Text) &&
@@ -344,6 +409,10 @@ namespace Programming.View.Panels
                    RectanglesListBox.SelectedIndex == -1;
         }
 
+        /// <summary>
+        /// Добавляет панель, представляющую новый прямоугольник на форму.
+        /// </summary>
+        /// <param name="rectangle">Прямоугольник, который добавляется.</param>
         private void AddRectanglePanel(Model.Classes.Rectangle rectangle)
         {
             var panel = new Panel
@@ -358,6 +427,11 @@ namespace Programming.View.Panels
             _rectanglePanels.Add(panel);
         }
 
+        /// <summary>
+        /// Обработчик события нажатия кнопки удаления прямоугольника.
+        /// </summary>
+        /// <param name="sender">Источник события.</param>
+        /// <param name="e">Параметры события.</param>
         private void RemoveRectangleButton_Click(object sender, EventArgs e)
         {
             try
@@ -396,6 +470,9 @@ namespace Programming.View.Panels
             }
         }
 
+        /// <summary>
+        /// Поиск столкновений между всеми парами прямоугольников.
+        /// </summary>
         private void FindCollisions()
         {
             foreach (var panel in _rectanglePanels)
@@ -410,9 +487,9 @@ namespace Programming.View.Panels
                     if (CollisionManager.IsCollision(_rectangles[i], _rectangles[j]))
                     {
                         if (i < _rectanglePanels.Count)
-                            _rectanglePanels[i].BackColor = System.Drawing.Color.FromArgb(127, 255, 127, 127);
+                            _rectanglePanels[i].BackColor = System.Drawing.Color.FromArgb(127, 255, 127, 127); // красный цвет при столкновении
                         if (j < _rectanglePanels.Count)
-                            _rectanglePanels[j].BackColor = System.Drawing.Color.FromArgb(127, 255, 127, 127);
+                            _rectanglePanels[j].BackColor = System.Drawing.Color.FromArgb(127, 255, 127, 127); // красный цвет при столкновении
                     }
                 }
             }

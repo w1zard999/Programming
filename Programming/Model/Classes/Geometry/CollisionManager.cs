@@ -8,6 +8,12 @@ namespace Programming.Model.Classes.Geometry
 {
     public static class CollisionManager
     {
+        /// <summary>
+        /// Определяет столкновение двух прямоугольников.
+        /// </summary>
+        /// <param name="rectangle1">Первый прямоугольник.</param>
+        /// <param name="rectangle2">Второй прямоугольник.</param>
+        /// <returns><c>true</c>, если прямоугольники пересекаются, иначе <c>false</c>.</returns>
         public static bool IsCollision(Rectangle rectangle1, Rectangle rectangle2)
         {
             double deltaX = Math.Abs(rectangle1.Center.X - rectangle2.Center.X);
@@ -24,6 +30,12 @@ namespace Programming.Model.Classes.Geometry
             return overlapX && overlapY;
         }
 
+        /// <summary>
+        /// Определяет столкновение двух колец.
+        /// </summary>
+        /// <param name="ring1">Первое кольцо.</param>
+        /// <param name="ring2">Второе кольцо.</param>
+        /// <returns><c>true</c>, если кольца пересекаются, иначе <c>false</c>.</returns>
         public static bool IsCollision(Ring ring1, Ring ring2)
         {
             double dx = ring1.Center.X - ring2.Center.X;

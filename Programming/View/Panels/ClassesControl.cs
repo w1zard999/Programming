@@ -14,12 +14,29 @@ namespace Programming.View.Panels
 {
     public partial class ClassesControl : UserControl
     {
+        /// <summary>
+        /// Массив объектов прямоугольников.
+        /// </summary>
         private Model.Classes.Rectangle[] _rectangles;
+
+        /// <summary>
+        /// Текущий выделенный объект прямоугольника.
+        /// </summary>
         private Model.Classes.Rectangle _currentRectangle;
 
+        /// <summary>
+        /// Массив фильмов.
+        /// </summary>
         private Model.Classes.Film[] _films;
+
+        /// <summary>
+        /// Текущий выделенный фильм.
+        /// </summary>
         private Model.Classes.Film _currentFilm;
 
+        /// <summary>
+        /// Создает экземпляр компонента <see cref="ClassesControl"/>.
+        /// </summary>
         public ClassesControl()
         {
             InitializeComponent();
@@ -33,6 +50,9 @@ namespace Programming.View.Panels
             RefreshRectanglesListBoxes();
         }
 
+        /// <summary>
+        /// Инициализация массива прямоугольников случайными значениями.
+        /// </summary>
         private void InitializeRectangles()
         {
             for (int i = 0; i < _rectangles.Length; i++)
@@ -43,9 +63,12 @@ namespace Programming.View.Panels
             _currentRectangle = _rectangles[0];
         }
 
+        /// <summary>
+        /// Инициализация массива фильмов заранее известными значениями.
+        /// </summary>
         private void InitializeFilms()
         {
-            _films[0] = new Model.Classes.Film("Дерево жизни", 138, 2011, "Драма, филосовская притча", 7.3);
+            _films[0] = new Model.Classes.Film("Дерево жизни", 138, 2011, "Драма, философская притча", 7.3);
             _films[1] = new Model.Classes.Film("Поездка в Америку", 117, 1988, "Комедия", 6.7);
             _films[2] = new Model.Classes.Film("Остров проклятых", 138, 2010, "Триллер, детектив", 8.1);
 
@@ -57,6 +80,9 @@ namespace Programming.View.Panels
             _currentFilm = _films[0];
         }
 
+        /// <summary>
+        /// Обновляет содержимое списков прямоугольников.
+        /// </summary>
         private void RefreshRectanglesListBoxes()
         {
             RectanglesListBox.Items.Clear();
@@ -69,6 +95,12 @@ namespace Programming.View.Panels
             _currentRectangle = _rectangles[0];
         }
 
+        /// <summary>
+        /// Обработчик события изменения выбранного индекса в списке прямоугольников.
+        /// Отображает информацию о текущем прямоугольнике.
+        /// </summary>
+        /// <param name="sender">Источник события.</param>
+        /// <param name="e">Параметры события.</param>
         private void RectanglesListBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (RectanglesListBox.SelectedItem != null)
@@ -82,9 +114,13 @@ namespace Programming.View.Panels
                 TextBoxRectangleId.Text = _currentRectangle.Id.ToString();
                 RectangleColorTextBox.Text = _currentRectangle.Color;
             }
-
         }
 
+        /// <summary>
+        /// Обработчик изменения длины текущего прямоугольника.
+        /// </summary>
+        /// <param name="sender">Источник события.</param>
+        /// <param name="e">Параметры события.</param>
         private void RectangleLenghtTextBox_TextChanged(object sender, EventArgs e)
         {
             try
@@ -104,6 +140,11 @@ namespace Programming.View.Panels
             }
         }
 
+        /// <summary>
+        /// Обработчик изменения ширины текущего прямоугольника.
+        /// </summary>
+        /// <param name="sender">Источник события.</param>
+        /// <param name="e">Параметры события.</param>
         private void RectangleWidthTextBox_TextChanged(object sender, EventArgs e)
         {
             try
@@ -123,6 +164,11 @@ namespace Programming.View.Panels
             }
         }
 
+        /// <summary>
+        /// Обработчик изменения цвета текущего прямоугольника.
+        /// </summary>
+        /// <param name="sender">Источник события.</param>
+        /// <param name="e">Параметры события.</param>
         private void RectangleColor_TextChange(object sender, EventArgs e)
         {
             string newColor = RectangleColorTextBox.Text.Trim();
@@ -137,6 +183,11 @@ namespace Programming.View.Panels
             RectangleColorTextBox.BackColor = System.Drawing.Color.White;
         }
 
+        /// <summary>
+        /// Находит индекс прямоугольника с максимальной шириной среди указанных.
+        /// </summary>
+        /// <param name="rectangles">Массив прямоугольников для проверки.</param>
+        /// <returns>Индекс прямоугольника с наибольшей шириной.</returns>
         private int FindRectangleWithMaxWidth(Model.Classes.Rectangle[] rectangles)
         {
             if (rectangles == null || rectangles.Length == 0)
@@ -157,11 +208,22 @@ namespace Programming.View.Panels
             return maxIndex;
         }
 
+        /// <summary>
+        /// Обработчик события нажатия кнопки поиска прямоугольника с максимальной шириной.
+        /// </summary>
+        /// <param name="sender">Источник события.</param>
+        /// <param name="e">Параметры события.</param>
         private void RectangleFindButton_Click(object sender, MouseEventArgs e)
         {
             RectanglesListBox.SelectedIndex = FindRectangleWithMaxWidth(_rectangles);
         }
 
+        /// <summary>
+        /// Обработчик события изменения выбранного фильма.
+        /// Отображает информацию о текущем фильме.
+        /// </summary>
+        /// <param name="sender">Источник события.</param>
+        /// <param name="e">Параметры события.</param>
         private void FilmsListBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (FilmsListBox.SelectedItem != null)
@@ -174,9 +236,13 @@ namespace Programming.View.Panels
                 FilmGenreTextBox.Text = _currentFilm.Genre;
                 FilmRatingTextBox.Text = _currentFilm.Rating.ToString("F1");
             }
-
         }
 
+        /// <summary>
+        /// Обработчик изменения длительности текущего фильма.
+        /// </summary>
+        /// <param name="sender">Источник события.</param>
+        /// <param name="e">Параметры события.</param>
         private void FilmDurationInMinutes_TextChanged(object sender, EventArgs e)
         {
             try
@@ -196,6 +262,11 @@ namespace Programming.View.Panels
             }
         }
 
+        /// <summary>
+        /// Обработчик изменения года выпуска текущего фильма.
+        /// </summary>
+        /// <param name="sender">Источник события.</param>
+        /// <param name="e">Параметры события.</param>
         private void FilmReleaseYear_TextChanged(object sender, EventArgs e)
         {
             try
@@ -215,6 +286,11 @@ namespace Programming.View.Panels
             }
         }
 
+        /// <summary>
+        /// Обработчик изменения рейтинга текущего фильма.
+        /// </summary>
+        /// <param name="sender">Источник события.</param>
+        /// <param name="e">Параметры события.</param>
         private void FilmRating_TextChanged(object sender, EventArgs e)
         {
             try
@@ -234,6 +310,11 @@ namespace Programming.View.Panels
             }
         }
 
+        /// <summary>
+        /// Обработчик изменения заголовка текущего фильма.
+        /// </summary>
+        /// <param name="sender">Источник события.</param>
+        /// <param name="e">Параметры события.</param>
         private void FilmTitle_TextChange(object sender, EventArgs e)
         {
             string newTitle = FilmTitleTextBox.Text.Trim();
@@ -248,6 +329,11 @@ namespace Programming.View.Panels
             FilmTitleTextBox.BackColor = System.Drawing.Color.White;
         }
 
+        /// <summary>
+        /// Обработчик изменения жанра текущего фильма.
+        /// </summary>
+        /// <param name="sender">Источник события.</param>
+        /// <param name="e">Параметры события.</param>
         private void FilmGenre_TextChange(object sender, EventArgs e)
         {
             string newGenre = FilmGenreTextBox.Text.Trim();
@@ -262,6 +348,11 @@ namespace Programming.View.Panels
             FilmGenreTextBox.BackColor = System.Drawing.Color.White;
         }
 
+        /// <summary>
+        /// Нахождение фильма с максимальным рейтингом.
+        /// </summary>
+        /// <param name="films">Массив фильмов для поиска.</param>
+        /// <returns>Индекс фильма с наивысшим рейтингом.</returns>
         private int FindFilmWithMaxRating(Model.Classes.Film[] films)
         {
             if (films == null || films.Length == 0)
@@ -282,6 +373,11 @@ namespace Programming.View.Panels
             return maxIndex;
         }
 
+        /// <summary>
+        /// Обработчик события нажатия кнопки поиска фильма с максимальным рейтингом.
+        /// </summary>
+        /// <param name="sender">Источник события.</param>
+        /// <param name="e">Параметры события.</param>
         private void FilmFindButton_Click(object sender, MouseEventArgs e)
         {
             FilmsListBox.SelectedIndex = FindFilmWithMaxRating(_films);

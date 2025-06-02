@@ -13,6 +13,9 @@ namespace Programming.View.Panels
 {
     public partial class EnumsControl : UserControl
     {
+        /// <summary>
+        /// Создаёт экземпляр класса <see cref="EnumsControl"/>.
+        /// </summary>
         public EnumsControl()
         {
             InitializeComponent();
@@ -23,6 +26,12 @@ namespace Programming.View.Panels
             }
         }
 
+        /// <summary>
+        /// Обработчик события изменения выбранного индекса списка enums.
+        /// Заполняет список значений выбранным типом перечисления.
+        /// </summary>
+        /// <param name="sender">Источник события.</param>
+        /// <param name="e">Параметры события.</param>
         private void EnumsListBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (EnumsListBox.SelectedItem == null) return;
@@ -50,15 +59,24 @@ namespace Programming.View.Panels
                     AddToValueList(typeof(Model.Enums.Weekday));
                     break;
             }
-            
         }
 
-        void AddToValueList(Type enumType)
+        /// <summary>
+        /// Заполняет список значениями указанного типа перечисления.
+        /// </summary>
+        /// <param name="enumType">Тип перечисления.</param>
+        private void AddToValueList(Type enumType)
         {
             ValuesListBox.Items.Clear();
             ValuesListBox.Items.AddRange(Enum.GetNames(enumType));
         }
 
+        /// <summary>
+        /// Обработчик события выбора нового значения в списке values.
+        /// Устанавливает номер выбранного значения в соответствующее текстовое поле.
+        /// </summary>
+        /// <param name="sender">Источник события.</param>
+        /// <param name="e">Параметры события.</param>
         private void ValuesListBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (ValuesListBox.SelectedItem != null)
@@ -68,6 +86,12 @@ namespace Programming.View.Panels
             }
         }
 
+        /// <summary>
+        /// Обработчик нажатия кнопки анализа введённого текста.
+        /// Анализирует ввод пользователя относительно типов перечислений и выводит сообщение.
+        /// </summary>
+        /// <param name="sender">Источник события.</param>
+        /// <param name="e">Параметры события.</param>
         private void ParseButton_Click(object sender, EventArgs e)
         {
             string inputText = TextParseBox.Text.Trim();
@@ -86,6 +110,12 @@ namespace Programming.View.Panels
             }
         }
 
+        /// <summary>
+        /// Обработчик нажатия кнопки сезона.
+        /// Меняет фон формы в зависимости от выбранного времени года.
+        /// </summary>
+        /// <param name="sender">Источник события.</param>
+        /// <param name="e">Параметры события.</param>
         private void SeasonButton_Click(object sender, EventArgs e)
         {
             string selectedSeason = (string)SeasonComboBox.SelectedItem;
@@ -96,7 +126,7 @@ namespace Programming.View.Panels
                     this.BackColor = System.Drawing.Color.FromArgb(255, 255, 255);
                     MessageBox.Show("Ура! Солнце!");
                     break;
-                case "Autum":
+                case "Autumn": // Исправлено Autum → Autumn
                     this.BackColor = System.Drawing.Color.FromArgb(226, 156, 69);
                     break;
                 case "Winter":

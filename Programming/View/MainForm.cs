@@ -10,6 +10,9 @@ namespace Programming
 {
     public partial class MainForm : Form
     {
+        /// <summary>
+        /// Создаёт экземпляр главной формы приложения.
+        /// </summary>
         public MainForm()
         {
             InitializeComponent();

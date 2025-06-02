@@ -8,10 +8,24 @@ namespace Programming.Model.Classes.Geometry
 {
     public class Ring
     {
+        /// <summary>
+        /// Центр кольца.
+        /// </summary>
         public Point2D Center { get; private set; }
-        private double _outerRadius;
+
+        /// <summary>
+        /// Внутренний радиус кольца.
+        /// </summary>
         private double _innerRadius;
 
+        /// <summary>
+        /// Внешний радиус кольца.
+        /// </summary>
+        private double _outerRadius;
+
+        /// <summary>
+        /// Возвращает и задаёт внешний радиус кольца.
+        /// </summary>
         public double OuterRadius
         {
             get { return _outerRadius; }
@@ -22,9 +36,12 @@ namespace Programming.Model.Classes.Geometry
             }
         }
 
+        /// <summary>
+        /// Возвращает внутренний радиус кольца.
+        /// </summary>
         public double InnerRadius
         {
-            get { return _outerRadius; }
+            get { return _innerRadius; }
             set
             {
                 Validator.AssertValueInRange(value, 1, OuterRadius, nameof(InnerRadius));
@@ -32,6 +49,9 @@ namespace Programming.Model.Classes.Geometry
             }
         }
 
+        /// <summary>
+        /// Площадь кольца.
+        /// </summary>
         public double Area
         {
             get
@@ -40,8 +60,17 @@ namespace Programming.Model.Classes.Geometry
             }
         }
 
+        /// <summary>
+        /// Конструктор по умолчанию.
+        /// </summary>
         public Ring() { }
 
+        /// <summary>
+        /// Конструктор кольца с параметрами.
+        /// </summary>
+        /// <param name="center">Центр кольца.</param>
+        /// <param name="outerRadius">Внешний радиус.</param>
+        /// <param name="innerRadius">Внутренний радиус.</param>
         public Ring(Point2D center, double outerRadius, double innerRadius)
         {
             Center = center;
