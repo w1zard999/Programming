@@ -8,10 +8,24 @@ namespace Programming.Model.Classes
 {
     public class Time
     {
+        /// <summary>
+        /// Часы.
+        /// </summary>
         private int _hours;
+
+        /// <summary>
+        /// Минуты.
+        /// </summary>
         private int _minutes;
+
+        /// <summary>
+        /// Секунды.
+        /// </summary>
         private int _seconds;
 
+        /// <summary>
+        /// Возвращает и задает часы.
+        /// </summary>
         public int Hours
         {
             get { return _hours; }
@@ -22,6 +36,9 @@ namespace Programming.Model.Classes
             }
         }
 
+        /// <summary>
+        /// Возвращает и задает минуты.
+        /// </summary>
         public int Minutes
         {
             get { return _minutes; }
@@ -32,6 +49,9 @@ namespace Programming.Model.Classes
             }
         }
 
+        /// <summary>
+        /// Возвращает и задает секунды.
+        /// </summary>
         public int Seconds
         {
             get { return _seconds; }
@@ -42,8 +62,17 @@ namespace Programming.Model.Classes
             }
         }
 
+        /// <summary>
+        /// Конструктор по умолчанию.
+        /// </summary>
         public Time() { }
 
+        /// <summary>
+        /// Конструктор с передачей часов, минут и секунд.
+        /// </summary>
+        /// <param name="hours">Значение часов.</param>
+        /// <param name="minutes">Значение минут.</param>
+        /// <param name="seconds">Значение секунд.</param>
         public Time(int hours, int minutes, int seconds)
         {
             this.Hours = hours;

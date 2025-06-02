@@ -9,10 +9,24 @@ namespace Programming.Model.Classes
 {
     public class Contact
     {
+        /// <summary>
+        /// Имя контакта.
+        /// </summary>
         public string _name;
+
+        /// <summary>
+        /// Фамилия контакта.
+        /// </summary>
         public string _surname;
+
+        /// <summary>
+        /// Номер телефона контакта.
+        /// </summary>
         public string _phoneNumber;
 
+        /// <summary>
+        /// Возвращает и задаёт имя контакта.
+        /// </summary>
         public string Name
         {
             get { return _name; }
@@ -23,6 +37,9 @@ namespace Programming.Model.Classes
             }
         }
 
+        /// <summary>
+        /// Возвращает и задаёт фамилию контакта.
+        /// </summary>
         public string Surname
         {
             get { return _surname; }
@@ -33,6 +50,9 @@ namespace Programming.Model.Classes
             }
         }
 
+        /// <summary>
+        /// Возвращает и задаёт номер телефона контакта.
+        /// </summary>
         public string PhoneNumber
         {
             get { return _phoneNumber; }
@@ -44,8 +64,18 @@ namespace Programming.Model.Classes
                     throw new ArgumentException("Номер телефона не может быть пустым");
             }
         }
+
+        /// <summary>
+        /// Конструктор по умолчанию.
+        /// </summary>
         public Contact() { }
 
+        /// <summary>
+        /// Конструктор с параметрами контактной информации.
+        /// </summary>
+        /// <param name="name">Имя контакта.</param>
+        /// <param name="surname">Фамилия контакта.</param>
+        /// <param name="phoneNumber">Номер телефона контакта.</param>
         public Contact(string name, string surname, string phoneNumber)
         {
             this.Name = name;

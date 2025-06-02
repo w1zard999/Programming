@@ -9,6 +9,11 @@ namespace Programming.Model.Classes
 {
     public static class Validator
     {
+        /// <summary>
+        /// Проверяет, является ли целое число положительным.
+        /// </summary>
+        /// <param name="value">Проверяемое значение.</param>
+        /// <param name="propertyName">Имя свойства, которое проверяется.</param>
         public static void AssertOnPositiveValue(int value, string propertyName)
         {
             if (value <= 0)
@@ -17,6 +22,11 @@ namespace Programming.Model.Classes
             }
         }
 
+        /// <summary>
+        /// Проверяет, является ли вещественное число положительным.
+        /// </summary>
+        /// <param name="value">Проверяемое значение.</param>
+        /// <param name="propertyName">Имя свойства, которое проверяется.</param>
         public static void AssertOnPositiveValue(double value, string propertyName)
         {
             if (value <= 0)
@@ -25,6 +35,13 @@ namespace Programming.Model.Classes
             }
         }
 
+        /// <summary>
+        /// Проверяет, находится ли целочисленное значение в заданном диапазоне.
+        /// </summary>
+        /// <param name="value">Проверяемое значение.</param>
+        /// <param name="min">Минимальное допустимое значение.</param>
+        /// <param name="max">Максимальное допустимое значение.</param>
+        /// <param name="propertyName">Имя свойства, которое проверяется.</param>
         public static void AssertValueInRange(int value, int min, int max, string propertyName)
         {
             if (value < min || value > max)
@@ -33,6 +50,13 @@ namespace Programming.Model.Classes
             }
         }
 
+        /// <summary>
+        /// Проверяет, находится ли вещественное значение в заданном диапазоне.
+        /// </summary>
+        /// <param name="value">Проверяемое значение.</param>
+        /// <param name="min">Минимальное допустимое значение.</param>
+        /// <param name="max">Максимальное допустимое значение.</param>
+        /// <param name="propertyName">Имя свойства, которое проверяется.</param>
         public static void AssertValueInRange(double value, double min, double max, string propertyName)
         {
             if (value < min || value > max)
@@ -41,6 +65,11 @@ namespace Programming.Model.Classes
             }
         }
 
+        /// <summary>
+        /// Проверяет, содержит ли строка только латинские буквы.
+        /// </summary>
+        /// <param name="value">Проверяемая строка.</param>
+        /// <param name="propertyName">Имя свойства, которое проверяется.</param>
         public static void AssertStringContainsOnlyLetters(string value, string propertyName)
         {
             if (!Regex.IsMatch(value, @"^[A-Za-z]+$"))
