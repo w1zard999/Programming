@@ -172,6 +172,7 @@
             SaveNewInfoEmployeButton.TabIndex = 1;
             SaveNewInfoEmployeButton.Text = "Save";
             SaveNewInfoEmployeButton.UseVisualStyleBackColor = true;
+            SaveNewInfoEmployeButton.MouseClick += SaveNewInfoEmployeButton_MouseClick;
             // 
             // fileSystemWatcher1
             // 

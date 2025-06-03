@@ -1,3 +1,4 @@
+using ListOfEmployees.Model;
 using System;
 
 namespace ListOfEmployees
@@ -10,18 +11,12 @@ namespace ListOfEmployees
         public MainForm()
         {
             InitializeComponent();
-            InitializeEmployees();
+            LoadEmployees();
         }
 
-        private void InitializeEmployees()
+        private void LoadEmployees()
         {
-            Random random = new Random();
-            _employees = new Model.EmployeesInfo[3];
-
-            _employees[0] = new Model.EmployeesInfo("Беков Антон Алексеевич", "Сварщик", new DateTime(2025, 05, 15), random.Next(10000, 50000));
-            _employees[1] = new Model.EmployeesInfo("Смирнов Алексей Витальевич", "Менеджер", new DateTime(2023, 01, 23), random.Next(30000, 50000));
-            _employees[2] = new Model.EmployeesInfo("Крылова Августина Денисовна", "Секретарь", new DateTime(2024, 07, 03), random.Next(10000, 50000));
-
+            _employees = EmployeeDataService.Load();
             RefreshEmployeesListBox();
         }
 
@@ -31,12 +26,11 @@ namespace ListOfEmployees
 
             FullNameEmployeTextBox.Text = employee.FullName;
             PositionEmployeTextBox.Text = employee.Position;
-            DateOfEmploymentDateTimePicker.Text = employee.DateOfEmployment.ToString();
+            DateOfEmploymentDateTimePicker.Value = employee.DateOfEmployment.Date;
             SalaryEmployeTextBox.Text = employee.Salary.ToString("F2");
 
             FullNameEmployeTextBox.BackColor = System.Drawing.Color.White;
             PositionEmployeTextBox.BackColor = System.Drawing.Color.White;
-            DateOfEmploymentDateTimePicker.BackColor = System.Drawing.Color.White;
             SalaryEmployeTextBox.BackColor = System.Drawing.Color.White;
         }
 
@@ -44,12 +38,11 @@ namespace ListOfEmployees
         {
             FullNameEmployeTextBox.Text = string.Empty;
             PositionEmployeTextBox.Text = string.Empty;
-            DateOfEmploymentDateTimePicker.Text = string.Empty;
+            DateOfEmploymentDateTimePicker.Value = DateTime.Today;
             SalaryEmployeTextBox.Text = string.Empty;
 
             FullNameEmployeTextBox.BackColor = System.Drawing.Color.White;
             PositionEmployeTextBox.BackColor = System.Drawing.Color.White;
-            DateOfEmploymentDateTimePicker.BackColor = System.Drawing.Color.White;
             SalaryEmployeTextBox.BackColor = System.Drawing.Color.White;
         }
 
@@ -76,7 +69,7 @@ namespace ListOfEmployees
             }
             else
             {
-                EmployeesListBox.SelectedIndex = 0;
+                 EmployeesListBox.SelectedIndex = 0;
                 _currentEmploye = _employees[EmployeesListBox.SelectedIndex];
                 UpdateEmployeInfo(_currentEmploye);
             }
@@ -224,7 +217,6 @@ namespace ListOfEmployees
                 }
                 else
                 {
-                    
                     newEmploye = new Model.EmployeesInfo("Фамилия Имя Отчество", "Должность", new DateTime(DateTime.Now.Year, 01, 01), 10000);
                 }
 
@@ -259,13 +251,22 @@ namespace ListOfEmployees
                 }
 
                 _employees = newEmployees;
-                _currentEmploye = _employees[0];
+                if (_employees.Length > 0)
+                {
+                    _currentEmploye = _employees[0];
+                }
                 RefreshEmployeesListBox();
             }
             catch (ArgumentException ex)
             {
                 MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
+        }
+
+        private void SaveNewInfoEmployeButton_MouseClick(object sender, MouseEventArgs e)
+        {
+            EmployeeDataService.Save(_employees);
+            MessageBox.Show("Данные успешно сохранены!");
         }
     }
 }
