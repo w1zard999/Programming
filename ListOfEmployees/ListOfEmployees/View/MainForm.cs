@@ -61,38 +61,24 @@ namespace ListOfEmployees
             {
                 EmployeesListBox.Items.Add(employe.FullName);
             }
-            if (_employees.Length > 0)
+
+            if (_currentEmploye != null)
+            {
+                for (int i = 0; i < _employees.Length; i++)
+                {
+                    if (_employees[i].FullName == _currentEmploye.FullName)
+                    {
+                        EmployeesListBox.SelectedIndex = i;
+                        break;
+                    }
+                }
+                UpdateEmployeInfo(_currentEmploye);
+            }
+            else
             {
                 EmployeesListBox.SelectedIndex = 0;
                 _currentEmploye = _employees[EmployeesListBox.SelectedIndex];
                 UpdateEmployeInfo(_currentEmploye);
-            }
-        }
-
-        private void SortAndRefreshEmployeesList()
-        {
-            _employees = _employees.OrderBy(emp => emp.FullName).ToArray();
-            EmployeesListBox.BeginUpdate();
-            try
-            {
-                EmployeesListBox.Items.Clear();
-                foreach (var employee in _employees)
-                {
-                    EmployeesListBox.Items.Add(employee.FullName);
-                }
-            }
-            finally
-            {
-                EmployeesListBox.EndUpdate();
-            }
-
-            if (_currentEmploye != null)
-            {
-                int index = Array.FindIndex(_employees, e => e.FullName == _currentEmploye.FullName);
-                if (index >= 0)
-                {
-                    EmployeesListBox.SelectedIndex = index;
-                }
             }
         }
 
@@ -130,7 +116,7 @@ namespace ListOfEmployees
                 if (EmployeesListBox.SelectedIndex != -1)
                 {
                     _currentEmploye.FullName = fullName;
-                    SortAndRefreshEmployeesList();
+                    RefreshEmployeesListBox();
                 }
             }
             catch (ArgumentException)
@@ -238,14 +224,15 @@ namespace ListOfEmployees
                 }
                 else
                 {
+                    
                     newEmploye = new Model.EmployeesInfo("Фамилия Имя Отчество", "Должность", new DateTime(DateTime.Now.Year, 01, 01), 10000);
                 }
 
 
                 newEmployees[_employees.Length] = newEmploye;
                 _employees = newEmployees;
-
-                SortAndRefreshEmployeesList();
+                _currentEmploye = _employees[_employees.Length - 1];
+                RefreshEmployeesListBox();
             }
             catch (ArgumentException ex)
             {
@@ -272,7 +259,8 @@ namespace ListOfEmployees
                 }
 
                 _employees = newEmployees;
-                SortAndRefreshEmployeesList();
+                _currentEmploye = _employees[0];
+                RefreshEmployeesListBox();
             }
             catch (ArgumentException ex)
             {
