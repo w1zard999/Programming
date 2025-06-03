@@ -1,3 +1,5 @@
+using System;
+
 namespace ListOfEmployees
 {
     public partial class MainForm : Form
@@ -53,6 +55,7 @@ namespace ListOfEmployees
 
         private void RefreshEmployeesListBox()
         {
+            _employees = _employees.OrderBy(emp => emp.FullName).ToArray();
             EmployeesListBox.Items.Clear();
             foreach (var employe in _employees)
             {
@@ -61,20 +64,50 @@ namespace ListOfEmployees
             if (_employees.Length > 0)
             {
                 EmployeesListBox.SelectedIndex = 0;
+                _currentEmploye = _employees[EmployeesListBox.SelectedIndex];
+                UpdateEmployeInfo(_currentEmploye);
             }
-
-            _currentEmploye = _employees[0];
         }
 
-        private void EmployeesListBox_SelectedIndexChanged(object sender, EventArgs e)
+        private void SortAndRefreshEmployeesList()
         {
-            if (EmployeesListBox.SelectedIndex == -1 && EmployeesListBox.SelectedIndex >= _employees.Length)
+            _employees = _employees.OrderBy(emp => emp.FullName).ToArray();
+            EmployeesListBox.BeginUpdate();
+            try
+            {
+                EmployeesListBox.Items.Clear();
+                foreach (var employee in _employees)
+                {
+                    EmployeesListBox.Items.Add(employee.FullName);
+                }
+            }
+            finally
+            {
+                EmployeesListBox.EndUpdate();
+            }
+
+            if (_currentEmploye != null)
+            {
+                int index = Array.FindIndex(_employees, e => e.FullName == _currentEmploye.FullName);
+                if (index >= 0)
+                {
+                    EmployeesListBox.SelectedIndex = index;
+                }
+            }
+        }
+
+        private void EmployeesListBox_MouseDown(object sender, MouseEventArgs e)
+        {
+            var selectedIndex = EmployeesListBox.IndexFromPoint(e.Location);
+
+            if (selectedIndex == -1 || selectedIndex >= _employees.Length)
             {
                 ClearEmployeInfo();
+                EmployeesListBox.SelectedIndex = -1;
                 return;
             }
 
-            _currentEmploye = _employees[EmployeesListBox.SelectedIndex];
+            _currentEmploye = _employees[selectedIndex];
             UpdateEmployeInfo(_currentEmploye);
         }
 
@@ -87,10 +120,18 @@ namespace ListOfEmployees
                     FullNameEmployeTextBox.BackColor = System.Drawing.Color.White;
                     return;
                 }
+
                 string fullName = FullNameEmployeTextBox.Text.Trim();
                 Model.Validator.AssertStringContainsOnlyLetters(fullName, "ФИО сотрудника");
                 Model.Validator.AssertStringContainsMaxLetters(fullName, 100, "ФИО сотрудника");
+
                 FullNameEmployeTextBox.BackColor = System.Drawing.Color.White;
+
+                if (EmployeesListBox.SelectedIndex != -1)
+                {
+                    _currentEmploye.FullName = fullName;
+                    SortAndRefreshEmployeesList();
+                }
             }
             catch (ArgumentException)
             {
@@ -111,6 +152,11 @@ namespace ListOfEmployees
                 Model.Validator.AssertStringContainsOnlyLetters(position, "Наименование должности");
                 Model.Validator.AssertStringContainsMaxLetters(position, 50, "Наименование должности");
                 PositionEmployeTextBox.BackColor = System.Drawing.Color.White;
+
+                if (EmployeesListBox.SelectedIndex != -1)
+                {
+                    _currentEmploye.Position = position;
+                }
             }
             catch (ArgumentException)
             {
@@ -124,6 +170,10 @@ namespace ListOfEmployees
             {
                 DateTime dateEmployment = DateOfEmploymentDateTimePicker.Value.Date;
                 Model.Validator.AssertDateNotLaterThanToday(dateEmployment, "Дата приема на работу");
+                if (EmployeesListBox.SelectedIndex != -1)
+                {
+                    _currentEmploye.DateOfEmployment = dateEmployment;
+                }
             }
             catch (ArgumentException ex)
             {
@@ -143,6 +193,11 @@ namespace ListOfEmployees
                 var salaryEmploye = double.Parse(SalaryEmployeTextBox.Text);
                 Model.Validator.AssertValueInRange(salaryEmploye, 0, 50000, "Зарплата");
                 SalaryEmployeTextBox.BackColor = System.Drawing.Color.White;
+
+                if (EmployeesListBox.SelectedIndex != -1)
+                {
+                    _currentEmploye.Salary = salaryEmploye;
+                }
             }
             catch (ArgumentException)
             {
@@ -151,6 +206,77 @@ namespace ListOfEmployees
             catch (Exception)
             {
                 SalaryEmployeTextBox.BackColor = System.Drawing.Color.LightPink;
+            }
+        }
+
+        private void AddEmployeButton_MouseClick(object sender, MouseEventArgs e)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(FullNameEmployeTextBox.Text) ||
+                    string.IsNullOrWhiteSpace(PositionEmployeTextBox.Text) ||
+                    string.IsNullOrWhiteSpace(SalaryEmployeTextBox.Text))
+                {
+                    throw new ArgumentException("Одна или несколько строк пустые");
+                }
+
+
+                Model.EmployeesInfo[] newEmployees = new Model.EmployeesInfo[_employees.Length + 1];
+                Model.EmployeesInfo newEmploye;
+                for (int i = 0; i < _employees.Length; ++i)
+                {
+                    newEmployees[i] = _employees[i];
+                }
+
+                if (EmployeesListBox.SelectedIndex == -1 || EmployeesListBox.SelectedIndex >= _employees.Length)
+                {
+                    string fullName = FullNameEmployeTextBox.Text.Trim();
+                    string position = PositionEmployeTextBox.Text.Trim();
+                    DateTime dateTime = DateOfEmploymentDateTimePicker.Value.Date;
+                    double salary = double.Parse(SalaryEmployeTextBox.Text.Trim());
+                    newEmploye = new Model.EmployeesInfo(fullName, position, dateTime, salary);
+                }
+                else
+                {
+                    newEmploye = new Model.EmployeesInfo("Фамилия Имя Отчество", "Должность", new DateTime(DateTime.Now.Year, 01, 01), 10000);
+                }
+
+
+                newEmployees[_employees.Length] = newEmploye;
+                _employees = newEmployees;
+
+                SortAndRefreshEmployeesList();
+            }
+            catch (ArgumentException ex)
+            {
+                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
+
+        private void DeleteEmployeButton_MouseClick(object sender, MouseEventArgs e)
+        {
+            try
+            {
+                if (EmployeesListBox.SelectedIndex == -1 || EmployeesListBox.SelectedIndex >= _employees.Length)
+                {
+                    throw new ArgumentException("Не выбран работник в списке!");
+                }
+
+                Model.EmployeesInfo[] newEmployees = new Model.EmployeesInfo[_employees.Length - 1];
+                for (int i = 0, j = 0; i < _employees.Length; i++)
+                {
+                    if (i != EmployeesListBox.SelectedIndex)
+                    {
+                        newEmployees[j++] = _employees[i];
+                    }
+                }
+
+                _employees = newEmployees;
+                SortAndRefreshEmployeesList();
+            }
+            catch (ArgumentException ex)
+            {
+                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
     }

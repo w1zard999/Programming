@@ -388,7 +388,6 @@ namespace Programming.View.Panels
                 RefreshRectanglesListBox();
                 FindCollisions();
                 RectanglesListBox.SelectedIndex = _rectangles.Length - 1;
-                RectanglesListBox.SelectedIndex = _rectangles.Length - 1;
             }
             catch (Exception ex)
             {

@@ -54,7 +54,7 @@
             EmployeesListBox.Name = "EmployeesListBox";
             EmployeesListBox.Size = new Size(268, 424);
             EmployeesListBox.TabIndex = 0;
-            EmployeesListBox.SelectedIndexChanged += EmployeesListBox_SelectedIndexChanged;
+            EmployeesListBox.MouseDown += EmployeesListBox_MouseDown;
             // 
             // SelectedEmployeGroupBox
             // 
@@ -101,6 +101,7 @@
             DeleteEmployeButton.TabIndex = 2;
             DeleteEmployeButton.Text = "Delete";
             DeleteEmployeButton.UseVisualStyleBackColor = true;
+            DeleteEmployeButton.MouseClick += DeleteEmployeButton_MouseClick;
             // 
             // SalaryEmployeLabel
             // 
@@ -119,6 +120,7 @@
             AddEmployeButton.TabIndex = 0;
             AddEmployeButton.Text = "Add";
             AddEmployeButton.UseVisualStyleBackColor = true;
+            AddEmployeButton.MouseClick += AddEmployeButton_MouseClick;
             // 
             // SalaryEmployeTextBox
             // 
