@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             EmployeesListBox = new ListBox();
             SelectedEmployeGroupBox = new GroupBox();
             PositionEmployeLabel = new Label();
@@ -186,6 +187,7 @@
             ClientSize = new Size(800, 450);
             Controls.Add(SelectedEmployeGroupBox);
             Controls.Add(EmployeesListBox);
+            Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "MainForm";
             Text = "EmployeeApp";
             SelectedEmployeGroupBox.ResumeLayout(false);
