@@ -30,6 +30,11 @@ namespace ListOfEmployees
         private void LoadEmployees()
         {
             _employees = EmployeeDataService.Load();
+            if ( _employees.Length < 1 )
+            {
+                _employees = new Model.EmployeesInfo[1];
+                _employees[0] = new Model.EmployeesInfo("Фамилия Имя Отчество", "Должность", new DateTime(DateTime.Now.Year, 01, 01), 10000);
+            }
             RefreshEmployeesListBox();
         }
 
@@ -266,6 +271,12 @@ namespace ListOfEmployees
                     DateTime dateTime = DateOfEmploymentDateTimePicker.Value.Date;
                     double salary = double.Parse(SalaryEmployeTextBox.Text.Trim());
                     newEmploye = new Model.EmployeesInfo(fullName, position, dateTime, salary);
+                }
+                else if (string.IsNullOrWhiteSpace(FullNameEmployeTextBox.Text) &&
+                        string.IsNullOrWhiteSpace(PositionEmployeTextBox.Text) &&
+                        string.IsNullOrWhiteSpace(SalaryEmployeTextBox.Text))
+                {
+                    newEmploye = new Model.EmployeesInfo("Фамилия Имя Отчество", "Должность", new DateTime(DateTime.Now.Year, 01, 01), 10000);
                 }
                 else
                 {
