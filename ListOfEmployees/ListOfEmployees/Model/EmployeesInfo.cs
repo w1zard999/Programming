@@ -8,11 +8,29 @@ namespace ListOfEmployees.Model
 {
     public class EmployeesInfo
     {
+        /// <summary>
+        /// Полное имя сотрудника.
+        /// </summary>
         private string _fullName;
+
+        /// <summary>
+        /// Должность сотрудника.
+        /// </summary>
         private string _position;
+
+        /// <summary>
+        /// Дата принятия на работу.
+        /// </summary>
         private DateTime _dateOfEmployment;
+
+        /// <summary>
+        /// Зарплата сотрудника.
+        /// </summary>
         private double _salary;
 
+        /// <summary>
+        /// Возвращает и задаёт полное имя сотрудника.
+        /// </summary>
         public string FullName
         {
             get { return _fullName; }
@@ -23,6 +41,9 @@ namespace ListOfEmployees.Model
             }
         }
 
+        /// <summary>
+        /// Возвращает и задаёт должность сотрудника.
+        /// </summary>
         public string Position
         {
             get { return _position; }
@@ -33,6 +54,9 @@ namespace ListOfEmployees.Model
             }
         }
 
+        /// <summary>
+        /// Возвращает и задаёт дату принятия на работу.
+        /// </summary>
         public DateTime DateOfEmployment
         {
             get { return _dateOfEmployment; }
@@ -43,6 +67,9 @@ namespace ListOfEmployees.Model
             }
         }
 
+        /// <summary>
+        /// Возвращает и задаёт зарплату сотрудника.
+        /// </summary>
         public double Salary
         {
             get { return _salary; }
@@ -53,8 +80,18 @@ namespace ListOfEmployees.Model
             }
         }
 
+        /// <summary>
+        /// Конструктор по умолчанию.
+        /// </summary>
         public EmployeesInfo() { }
 
+        /// <summary>
+        /// Конструктор с полной информацией о сотруднике.
+        /// </summary>
+        /// <param name="fullName">Полное имя сотрудника.</param>
+        /// <param name="position">Должность сотрудника.</param>
+        /// <param name="dateOfEmployment">Дата принятия на работу.</param>
+        /// <param name="salary">Зарплата сотрудника.</param>
         public EmployeesInfo(string fullName, string position, DateTime dateOfEmployment, double salary)
         {
             this.FullName = fullName;

@@ -5,21 +5,38 @@ namespace ListOfEmployees
 {
     public partial class MainForm : Form
     {
+        /// <summary>
+        /// Массив сотрудников.
+        /// </summary>
         private Model.EmployeesInfo[] _employees;
+
+        /// <summary>
+        /// Текущий сотрудник, выбранный в списке.
+        /// </summary>
         private Model.EmployeesInfo _currentEmploye;
 
+        /// <summary>
+        /// Создаёт экземпляр основной формы приложения.
+        /// </summary>
         public MainForm()
         {
             InitializeComponent();
             LoadEmployees();
         }
 
+        /// <summary>
+        /// Загружает список сотрудников из хранилища данных.
+        /// </summary>
         private void LoadEmployees()
         {
             _employees = EmployeeDataService.Load();
             RefreshEmployeesListBox();
         }
 
+        /// <summary>
+        /// Обновляет интерфейсную информацию о сотруднике.
+        /// </summary>
+        /// <param name="employee">Информация о сотруднике.</param>
         private void UpdateEmployeInfo(Model.EmployeesInfo employee)
         {
             if (employee == null) return;
@@ -34,6 +51,9 @@ namespace ListOfEmployees
             SalaryEmployeTextBox.BackColor = System.Drawing.Color.White;
         }
 
+        /// <summary>
+        /// Очищает поля с информацией о сотруднике.
+        /// </summary>
         private void ClearEmployeInfo()
         {
             FullNameEmployeTextBox.Text = string.Empty;
@@ -46,6 +66,9 @@ namespace ListOfEmployees
             SalaryEmployeTextBox.BackColor = System.Drawing.Color.White;
         }
 
+        /// <summary>
+        /// Обновляет список сотрудников на форме.
+        /// </summary>
         private void RefreshEmployeesListBox()
         {
             _employees = _employees.OrderBy(emp => emp.FullName).ToArray();
@@ -69,12 +92,17 @@ namespace ListOfEmployees
             }
             else
             {
-                 EmployeesListBox.SelectedIndex = 0;
+                EmployeesListBox.SelectedIndex = 0;
                 _currentEmploye = _employees[EmployeesListBox.SelectedIndex];
                 UpdateEmployeInfo(_currentEmploye);
             }
         }
 
+        /// <summary>
+        /// Обработчик события щелчка мышью по списку сотрудников.
+        /// </summary>
+        /// <param name="sender">Источник события.</param>
+        /// <param name="e">Параметры события.</param>
         private void EmployeesListBox_MouseDown(object sender, MouseEventArgs e)
         {
             var selectedIndex = EmployeesListBox.IndexFromPoint(e.Location);
@@ -90,6 +118,11 @@ namespace ListOfEmployees
             UpdateEmployeInfo(_currentEmploye);
         }
 
+        /// <summary>
+        /// Обработчик изменения ФИО сотрудника.
+        /// </summary>
+        /// <param name="sender">Источник события.</param>
+        /// <param name="e">Параметры события.</param>
         private void FullNameEmployeTextBox_TextChanged(object sender, EventArgs e)
         {
             try
@@ -100,7 +133,7 @@ namespace ListOfEmployees
                     return;
                 }
 
-                string fullName = FullNameEmployeTextBox.Text.Trim();
+                string fullName = FullNameEmployeTextBox.Text;
                 Model.Validator.AssertStringContainsOnlyLetters(fullName, "ФИО сотрудника");
                 Model.Validator.AssertStringContainsMaxLetters(fullName, 100, "ФИО сотрудника");
 
@@ -118,6 +151,11 @@ namespace ListOfEmployees
             }
         }
 
+        /// <summary>
+        /// Обработчик изменения должности сотрудника.
+        /// </summary>
+        /// <param name="sender">Источник события.</param>
+        /// <param name="e">Параметры события.</param>
         private void PositionEmployeTextBox_TextChanged(object sender, EventArgs e)
         {
             try
@@ -143,6 +181,11 @@ namespace ListOfEmployees
             }
         }
 
+        /// <summary>
+        /// Обработчик изменения даты приёма на работу.
+        /// </summary>
+        /// <param name="sender">Источник события.</param>
+        /// <param name="e">Параметры события.</param>
         private void DateOfEmploymentDateTimePicker_ValueChanged(object sender, EventArgs e)
         {
             try
@@ -160,6 +203,11 @@ namespace ListOfEmployees
             }
         }
 
+        /// <summary>
+        /// Обработчик изменения зарплаты сотрудника.
+        /// </summary>
+        /// <param name="sender">Источник события.</param>
+        /// <param name="e">Параметры события.</param>
         private void SalaryEmployeTextBox_TextChanged(object sender, EventArgs e)
         {
             try
@@ -188,6 +236,11 @@ namespace ListOfEmployees
             }
         }
 
+        /// <summary>
+        /// Обработчик события добавления нового сотрудника.
+        /// </summary>
+        /// <param name="sender">Источник события.</param>
+        /// <param name="e">Параметры события.</param>
         private void AddEmployeButton_MouseClick(object sender, MouseEventArgs e)
         {
             try
@@ -198,7 +251,6 @@ namespace ListOfEmployees
                 {
                     throw new ArgumentException("Одна или несколько строк пустые");
                 }
-
 
                 Model.EmployeesInfo[] newEmployees = new Model.EmployeesInfo[_employees.Length + 1];
                 Model.EmployeesInfo newEmploye;
@@ -220,7 +272,6 @@ namespace ListOfEmployees
                     newEmploye = new Model.EmployeesInfo("Фамилия Имя Отчество", "Должность", new DateTime(DateTime.Now.Year, 01, 01), 10000);
                 }
 
-
                 newEmployees[_employees.Length] = newEmploye;
                 _employees = newEmployees;
                 _currentEmploye = _employees[_employees.Length - 1];
@@ -232,6 +283,11 @@ namespace ListOfEmployees
             }
         }
 
+        /// <summary>
+        /// Обработчик события удаления сотрудника.
+        /// </summary>
+        /// <param name="sender">Источник события.</param>
+        /// <param name="e">Параметры события.</param>
         private void DeleteEmployeButton_MouseClick(object sender, MouseEventArgs e)
         {
             try
@@ -263,6 +319,11 @@ namespace ListOfEmployees
             }
         }
 
+        /// <summary>
+        /// Обработчик сохранения новой информации о сотруднике.
+        /// </summary>
+        /// <param name="sender">Источник события.</param>
+        /// <param name="e">Параметры события.</param>
         private void SaveNewInfoEmployeButton_MouseClick(object sender, MouseEventArgs e)
         {
             EmployeeDataService.Save(_employees);
