@@ -187,7 +187,7 @@
             Controls.Add(SelectedEmployeGroupBox);
             Controls.Add(EmployeesListBox);
             Name = "MainForm";
-            Text = "EmployeApp";
+            Text = "EmployeeApp";
             SelectedEmployeGroupBox.ResumeLayout(false);
             SelectedEmployeGroupBox.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)fileSystemWatcher1).EndInit();
